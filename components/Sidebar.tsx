@@ -44,6 +44,7 @@ export default function Sidebar() {
         }
         .nav-item {
           display: flex;
+          flex-direction: row;
           align-items: center;
           gap: 12px;
           padding: 11px 14px;

@@ -116,7 +116,7 @@ export default function Sidebar() {
 
       <div className="logo-section">
         <div className="logo-img-wrapper">
-          <img src="/logo.png" alt="LG Art Sculptor Studio" className="logo-img" />
+          <img src="/logo-login.png" alt="LG Art Sculptor Studio" className="logo-img" />
         </div>
       </div>
 

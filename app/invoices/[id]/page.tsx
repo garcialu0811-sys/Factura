@@ -93,7 +93,7 @@ export default function InvoiceDetailPage() {
 
     // Add logo image
     const logoImg = new Image()
-    logoImg.src = '/logo.png'
+    logoImg.src = '/logo-login.png'
     await new Promise((resolve) => {
       logoImg.onload = resolve
     })

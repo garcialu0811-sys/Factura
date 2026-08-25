@@ -241,7 +241,7 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
       <div className="preview-header">
         <div className="company-info">
           <div className="company-logo">
-            <img src="/logo.png" alt="LG Art Sculptor Studio" className="invoice-logo" />
+            <img src="/logo-login.png" alt="LG Art Sculptor Studio" className="invoice-logo" />
           </div>
           <div className="company-contact">
             <span>📍 4ta. Calle 12-34, Zona 1, Guatemala, Guatemala</span>

@@ -1,7 +1,5 @@
 'use client'
 
-import { ReactNode } from 'react'
-
 interface InvoiceItem {
   description: string
   amount: number
@@ -31,26 +29,27 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
       <style jsx>{`
         .invoice-preview {
           background: white;
-          border-radius: 12px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+          padding: 16px;
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-size: 11px;
         }
         .preview-header {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
-          margin-bottom: 24px;
-          padding-bottom: 20px;
+          margin-bottom: 12px;
+          padding-bottom: 10px;
           border-bottom: 2px solid #c9a227;
         }
         .company-info {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 10px;
         }
         .company-logo {
-          max-width: 280px;
+          max-width: 180px;
         }
         .invoice-logo {
           width: 100%;
@@ -59,50 +58,49 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
           image-rendering: -webkit-optimize-contrast;
           image-rendering: crisp-edges;
         }
-        .invoice-badge {
-          text-align: right;
-        }
-        .invoice-badge .badge {
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          color: white;
-          padding: 8px 20px;
-          border-radius: 6px;
-          font-size: 14px;
-          font-weight: 700;
-          letter-spacing: 2px;
-          display: inline-block;
-          margin-bottom: 8px;
-        }
-        .invoice-badge .invoice-number {
-          font-size: 18px;
-          font-weight: 700;
-          color: #c9a227;
-          display: block;
-        }
         .company-contact {
           display: flex;
           flex-direction: column;
-          gap: 4px;
-          margin-top: 12px;
-          font-size: 11px;
+          gap: 2px;
+          margin-top: 6px;
+          font-size: 9px;
           color: #6b7280;
         }
         .company-contact span {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 4px;
+        }
+        .invoice-badge {
+          text-align: right;
+          flex-shrink: 0;
+        }
+        .invoice-badge .badge {
+          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
+          color: white;
+          padding: 4px 12px;
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          display: inline-block;
+          margin-bottom: 4px;
+        }
+        .invoice-badge .invoice-number {
+          font-size: 13px;
+          font-weight: 700;
+          color: #c9a227;
+          display: block;
         }
         .meta-row {
           display: flex;
           justify-content: space-between;
-          margin-bottom: 24px;
-        }
-        .meta-item {
-          font-size: 13px;
+          margin-bottom: 10px;
+          font-size: 10px;
         }
         .meta-item label {
           color: #6b7280;
-          margin-right: 8px;
+          margin-right: 4px;
         }
         .meta-item span {
           font-weight: 600;
@@ -110,35 +108,35 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
         }
         .client-section {
           background: #f5f3ee;
-          border-radius: 8px;
-          padding: 16px;
-          margin-bottom: 24px;
+          border-radius: 6px;
+          padding: 8px;
+          margin-bottom: 10px;
         }
         .client-section h3 {
           background: #c9a227;
           color: white;
-          padding: 8px 16px;
-          border-radius: 6px;
-          font-size: 12px;
+          padding: 4px 10px;
+          border-radius: 4px;
+          font-size: 9px;
           font-weight: 600;
           letter-spacing: 1px;
           text-transform: uppercase;
           display: inline-block;
-          margin-bottom: 12px;
+          margin-bottom: 6px;
         }
         .client-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 8px;
+          gap: 4px;
         }
         .client-field {
           display: flex;
-          gap: 8px;
-          font-size: 13px;
+          gap: 4px;
+          font-size: 10px;
         }
         .client-field .label {
           color: #6b7280;
-          min-width: 120px;
+          min-width: 80px;
         }
         .client-field .value {
           font-weight: 600;
@@ -147,25 +145,25 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
         .items-table {
           width: 100%;
           border-collapse: collapse;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
         }
         .items-table thead th {
           background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
           color: white;
-          padding: 12px 16px;
+          padding: 6px 8px;
           text-align: left;
-          font-size: 12px;
+          font-size: 9px;
           font-weight: 600;
-          letter-spacing: 1px;
+          letter-spacing: 0.5px;
           text-transform: uppercase;
         }
         .items-table thead th:last-child {
           text-align: right;
         }
         .items-table tbody td {
-          padding: 12px 16px;
+          padding: 6px 8px;
           border-bottom: 1px solid #e5e7eb;
-          font-size: 13px;
+          font-size: 10px;
         }
         .items-table tbody td:last-child {
           text-align: right;
@@ -177,64 +175,64 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
         .total-section {
           display: flex;
           justify-content: flex-end;
-          margin-top: 20px;
+          margin-top: 8px;
         }
         .total-box {
           background: #f5f3ee;
           border: 2px solid #c9a227;
-          border-radius: 8px;
-          padding: 16px 24px;
+          border-radius: 6px;
+          padding: 8px 14px;
           text-align: right;
         }
         .total-label {
-          font-size: 14px;
+          font-size: 10px;
           color: #6b7280;
-          margin-bottom: 4px;
+          margin-bottom: 2px;
         }
         .total-amount {
-          font-size: 28px;
+          font-size: 18px;
           font-weight: 700;
           color: #c9a227;
         }
         .thank-you {
           text-align: center;
-          margin-top: 30px;
-          padding-top: 20px;
+          margin-top: 10px;
+          padding-top: 8px;
           border-top: 1px solid #e5e7eb;
         }
         .thank-you p {
           font-family: 'Great Vibes', cursive;
-          font-size: 24px;
+          font-size: 16px;
           color: #c9a227;
         }
         .signatures {
           display: flex;
           justify-content: space-between;
-          margin-top: 40px;
-          padding-top: 20px;
+          align-items: flex-end;
+          margin-top: 12px;
+          padding-top: 8px;
         }
         .signature-box {
           text-align: center;
-          width: 200px;
+          width: 120px;
         }
         .signature-line {
           border-top: 1px solid #1a1a1a;
-          margin-top: 60px;
-          padding-top: 8px;
+          margin-top: 30px;
+          padding-top: 4px;
         }
         .signature-box .name {
-          font-size: 16px;
+          font-size: 11px;
           font-weight: 600;
           color: #1a1a1a;
         }
         .signature-box .role {
-          font-size: 12px;
+          font-size: 8px;
           color: #6b7280;
         }
         .seal {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto;
+          width: 50px;
+          height: 50px;
         }
       `}</style>
 
@@ -244,7 +242,7 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
             <img src="/logo-login.png" alt="LG Art Sculptor Studio" className="invoice-logo" />
           </div>
           <div className="company-contact">
-            <span>📍 4ta. Calle 12-34, Zona 1, Guatemala, Guatemala</span>
+            <span>📍 4ta. Calle 12-34, Zona 1, Guatemala</span>
             <span>📞 +502 1234 5678</span>
             <span>✉️ info@lgartstudio.com</span>
           </div>
@@ -262,7 +260,7 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
         </div>
         {data.orderNumber && (
           <div className="meta-item">
-            <label>No. de Orden:</label>
+            <label>No. Orden:</label>
             <span>{data.orderNumber}</span>
           </div>
         )}
@@ -272,7 +270,7 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
         <h3>Recibido De</h3>
         <div className="client-grid">
           <div className="client-field">
-            <span className="label">Nombre del Cliente:</span>
+            <span className="label">Nombre:</span>
             <span className="value">{data.clientName || '—'}</span>
           </div>
           <div className="client-field">
@@ -280,7 +278,7 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
             <span className="value">{data.clientAddress || '—'}</span>
           </div>
           <div className="client-field">
-            <span className="label">Ciudad, Estado, ZIP:</span>
+            <span className="label">Ciudad:</span>
             <span className="value">{data.clientCity || '—'}</span>
           </div>
           <div className="client-field">
@@ -294,7 +292,7 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
         <thead>
           <tr>
             <th>Descripción</th>
-            <th>Cantidad</th>
+            <th>Cant.</th>
             <th>Monto</th>
           </tr>
         </thead>

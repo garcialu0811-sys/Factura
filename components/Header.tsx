@@ -22,31 +22,41 @@ export default function Header({ title }: { title: string }) {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between no-print">
+    <header className="app-header no-print">
       <style jsx>{`
+        .app-header {
+          background: white;
+          border-bottom: 1px solid #e5e7eb;
+          padding: 10px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          min-height: 52px;
+          flex-shrink: 0;
+        }
         .header-title {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
           font-family: 'Playfair Display', serif;
-          font-size: 20px;
+          font-size: 16px;
           font-weight: 700;
           color: #1a1a1a;
         }
         .header-title svg {
-          width: 24px;
-          height: 24px;
+          width: 20px;
+          height: 20px;
           fill: #c9a227;
         }
         .header-right {
           display: flex;
           align-items: center;
-          gap: 20px;
+          gap: 14px;
         }
         .notification-bell {
           position: relative;
           cursor: pointer;
-          padding: 8px;
+          padding: 6px;
           border-radius: 8px;
           transition: background 0.2s;
         }
@@ -54,20 +64,20 @@ export default function Header({ title }: { title: string }) {
           background: #f5f3ee;
         }
         .notification-bell svg {
-          width: 24px;
-          height: 24px;
+          width: 20px;
+          height: 20px;
           fill: #6b7280;
         }
         .notification-badge {
           position: absolute;
-          top: 4px;
-          right: 4px;
-          width: 18px;
-          height: 18px;
+          top: 2px;
+          right: 2px;
+          width: 16px;
+          height: 16px;
           background: #c9a227;
           color: white;
           border-radius: 50%;
-          font-size: 10px;
+          font-size: 9px;
           font-weight: 600;
           display: flex;
           align-items: center;
@@ -79,9 +89,9 @@ export default function Header({ title }: { title: string }) {
         .user-button {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
           cursor: pointer;
-          padding: 6px 12px;
+          padding: 4px 8px;
           border-radius: 8px;
           transition: background 0.2s;
         }
@@ -89,8 +99,8 @@ export default function Header({ title }: { title: string }) {
           background: #f5f3ee;
         }
         .user-avatar {
-          width: 40px;
-          height: 40px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
           display: flex;
@@ -98,23 +108,25 @@ export default function Header({ title }: { title: string }) {
           justify-content: center;
           color: white;
           font-weight: 600;
-          font-size: 16px;
+          font-size: 13px;
+          flex-shrink: 0;
         }
         .user-info {
           text-align: left;
         }
         .user-name {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 600;
           color: #1a1a1a;
+          line-height: 1.2;
         }
         .user-role {
-          font-size: 12px;
+          font-size: 10px;
           color: #6b7280;
         }
         .dropdown-arrow {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           fill: #6b7280;
           transition: transform 0.2s;
         }
@@ -125,20 +137,20 @@ export default function Header({ title }: { title: string }) {
           position: absolute;
           top: 100%;
           right: 0;
-          margin-top: 8px;
+          margin-top: 6px;
           background: white;
           border-radius: 8px;
           box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-          min-width: 160px;
+          min-width: 150px;
           z-index: 50;
           overflow: hidden;
         }
         .dropdown-item {
           display: block;
           width: 100%;
-          padding: 12px 16px;
+          padding: 10px 14px;
           text-align: left;
-          font-size: 14px;
+          font-size: 13px;
           color: #374151;
           background: none;
           border: none;
@@ -154,6 +166,12 @@ export default function Header({ title }: { title: string }) {
         }
         .dropdown-item.danger:hover {
           background: #fef2f2;
+        }
+        @media (max-width: 768px) {
+          .app-header { padding: 8px 12px; }
+          .header-title { font-size: 14px; }
+          .user-info { display: none; }
+          .dropdown-arrow { display: none; }
         }
       `}</style>
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
@@ -122,82 +122,113 @@ export default function NewInvoicePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-cream-50">
+    <div className="app-layout">
+      <style jsx global>{`
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow: hidden;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: #f5f3ee;
+        }
+      `}</style>
+
       <style jsx>{`
+        .app-layout {
+          display: flex;
+          height: 100vh;
+          overflow: hidden;
+        }
         .main-content {
           flex: 1;
           display: flex;
           flex-direction: column;
+          min-width: 0;
+          height: 100vh;
+          overflow: hidden;
         }
         .content-area {
           flex: 1;
-          padding: 24px;
+          padding: 12px 16px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
         }
-        .page-header {
+        .page-title {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 24px;
+          gap: 8px;
+          margin-bottom: 10px;
+          flex-shrink: 0;
         }
-        .page-header svg {
-          width: 28px;
-          height: 28px;
+        .page-title svg {
+          width: 22px;
+          height: 22px;
           fill: #c9a227;
         }
-        .page-header h2 {
+        .page-title h2 {
           font-family: 'Playfair Display', serif;
-          font-size: 24px;
+          font-size: 18px;
           font-weight: 700;
           color: #1a1a1a;
+          margin: 0;
         }
         .form-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 24px;
+          gap: 14px;
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
         }
         .form-section {
           background: white;
-          border-radius: 12px;
-          padding: 24px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          border-radius: 10px;
+          padding: 14px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
         }
         .section-title {
           display: flex;
           align-items: center;
-          gap: 10px;
-          font-size: 16px;
+          gap: 8px;
+          font-size: 13px;
           font-weight: 700;
           color: #c9a227;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
+          flex-shrink: 0;
         }
         .section-title svg {
-          width: 24px;
-          height: 24px;
+          width: 18px;
+          height: 18px;
           fill: #c9a227;
         }
         .form-row {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          margin-bottom: 20px;
+          gap: 10px;
+          margin-bottom: 10px;
         }
         .form-group {
-          margin-bottom: 16px;
+          margin-bottom: 8px;
         }
         .form-group label {
           display: block;
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 600;
           color: #374151;
-          margin-bottom: 6px;
+          margin-bottom: 3px;
         }
         .form-group input,
         .form-group textarea {
           width: 100%;
-          padding: 10px 14px;
-          font-size: 14px;
+          padding: 7px 10px;
+          font-size: 12px;
           border: 1px solid #d1d5db;
-          border-radius: 8px;
+          border-radius: 6px;
           outline: none;
           transition: border-color 0.2s;
         }
@@ -207,47 +238,48 @@ export default function NewInvoicePage() {
         }
         .form-group textarea {
           resize: vertical;
-          min-height: 80px;
+          min-height: 40px;
         }
         .items-table {
           width: 100%;
           border-collapse: collapse;
-          margin-bottom: 16px;
+          margin-bottom: 8px;
+          flex: 1;
         }
         .items-table th {
           background: #f5f3ee;
-          padding: 10px 12px;
+          padding: 6px 8px;
           text-align: left;
-          font-size: 12px;
+          font-size: 10px;
           font-weight: 600;
           color: #6b7280;
           text-transform: uppercase;
         }
         .items-table td {
-          padding: 8px;
+          padding: 4px;
           border-bottom: 1px solid #e5e7eb;
         }
         .items-table input {
           width: 100%;
-          padding: 8px 10px;
-          font-size: 13px;
+          padding: 5px 8px;
+          font-size: 11px;
           border: 1px solid #d1d5db;
-          border-radius: 6px;
+          border-radius: 5px;
           outline: none;
         }
         .items-table input:focus {
           border-color: #c9a227;
         }
         .amount-input {
-          width: 100px !important;
+          width: 80px !important;
         }
         .quantity-input {
-          width: 60px !important;
+          width: 50px !important;
         }
         .remove-btn {
-          width: 28px;
-          height: 28px;
-          border-radius: 6px;
+          width: 24px;
+          height: 24px;
+          border-radius: 5px;
           border: none;
           background: #fee2e2;
           color: #dc2626;
@@ -256,6 +288,7 @@ export default function NewInvoicePage() {
           align-items: center;
           justify-content: center;
           transition: background 0.2s;
+          flex-shrink: 0;
         }
         .remove-btn:hover {
           background: #fecaca;
@@ -263,16 +296,18 @@ export default function NewInvoicePage() {
         .add-item-btn {
           display: flex;
           align-items: center;
-          gap: 8px;
-          padding: 10px 16px;
+          gap: 6px;
+          padding: 6px 12px;
           background: #f5f3ee;
-          border: 2px dashed #c9a227;
-          border-radius: 8px;
+          border: 1px dashed #c9a227;
+          border-radius: 6px;
           color: #c9a227;
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s;
+          flex-shrink: 0;
+          align-self: flex-start;
         }
         .add-item-btn:hover {
           background: #c9a227;
@@ -282,49 +317,52 @@ export default function NewInvoicePage() {
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          gap: 16px;
-          margin-top: 20px;
-          padding-top: 16px;
+          gap: 12px;
+          margin-top: 8px;
+          padding-top: 8px;
           border-top: 2px solid #c9a227;
+          flex-shrink: 0;
         }
         .total-label {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 700;
           color: #374151;
         }
         .total-value {
-          font-size: 24px;
+          font-size: 18px;
           font-weight: 700;
           color: #c9a227;
         }
         .actions-bar {
           display: flex;
-          gap: 12px;
-          margin-top: 24px;
+          gap: 8px;
+          margin-top: 10px;
+          flex-shrink: 0;
         }
         .btn {
           display: flex;
           align-items: center;
-          gap: 8px;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-size: 14px;
+          gap: 6px;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 12px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s;
           border: none;
+          white-space: nowrap;
         }
         .btn svg {
-          width: 18px;
-          height: 18px;
+          width: 14px;
+          height: 14px;
         }
         .btn-primary {
           background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
           color: white;
         }
         .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+          transform: translateY(-1px);
+          box-shadow: 0 3px 10px rgba(201, 162, 39, 0.3);
         }
         .btn-primary:disabled {
           opacity: 0.7;
@@ -342,17 +380,18 @@ export default function NewInvoicePage() {
         .btn-outline {
           background: white;
           color: #c9a227;
-          border: 2px solid #c9a227;
+          border: 1px solid #c9a227;
         }
         .btn-outline:hover {
           background: #c9a227;
           color: white;
         }
         .message {
-          padding: 12px 16px;
-          border-radius: 8px;
-          margin-bottom: 16px;
-          font-size: 14px;
+          padding: 8px 12px;
+          border-radius: 6px;
+          margin-bottom: 10px;
+          font-size: 12px;
+          flex-shrink: 0;
         }
         .message.success {
           background: #dcfce7;
@@ -366,32 +405,56 @@ export default function NewInvoicePage() {
         }
         .preview-section {
           position: sticky;
-          top: 24px;
+          top: 0;
+          overflow-y: auto;
         }
         .preview-title {
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-size: 14px;
+          gap: 6px;
+          font-size: 12px;
           font-weight: 600;
           color: #6b7280;
-          margin-bottom: 16px;
+          margin-bottom: 10px;
+          flex-shrink: 0;
         }
         .preview-title svg {
-          width: 18px;
-          height: 18px;
+          width: 14px;
+          height: 14px;
           fill: #c9a227;
         }
-        @media print {
-          .form-section, .actions-bar, .preview-title {
-            display: none !important;
-          }
+
+        @media (max-width: 1024px) {
           .form-grid {
             grid-template-columns: 1fr;
+            overflow: auto;
           }
-          .preview-section {
-            position: static;
+          .form-section {
+            overflow: visible;
           }
+        }
+
+        @media (max-width: 768px) {
+          .content-area {
+            padding: 8px 10px;
+          }
+          .form-row {
+            grid-template-columns: 1fr;
+            gap: 6px;
+          }
+          .actions-bar {
+            flex-wrap: wrap;
+          }
+          .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 80px;
+          }
+        }
+
+        @media print {
+          .no-print { display: none !important; }
+          .form-grid { grid-template-columns: 1fr; }
         }
       `}</style>
 
@@ -401,10 +464,9 @@ export default function NewInvoicePage() {
         <Header title="Nueva Factura" />
         
         <div className="content-area">
-          <div className="page-header">
+          <div className="page-title">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="#c9a227" strokeWidth="2"/>
-              <polyline points="14 2 14 8 20 8" fill="none" stroke="#c9a227" strokeWidth="2"/>
               <line x1="12" y1="18" x2="12" y2="12" stroke="#c9a227" strokeWidth="2"/>
               <line x1="9" y1="15" x2="15" y2="15" stroke="#c9a227" strokeWidth="2"/>
             </svg>
@@ -420,14 +482,15 @@ export default function NewInvoicePage() {
               <div className="section-title">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" strokeWidth="2"/>
-                  <polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                  <line x1="12" y1="18" x2="12" y2="12" stroke="currentColor" strokeWidth="2"/>
+                  <line x1="9" y1="15" x2="15" y2="15" stroke="currentColor" strokeWidth="2"/>
                 </svg>
                 Complete el formulario para crear la factura
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Número de Factura</label>
+                  <label>No. Factura</label>
                   <input type="text" value={invoiceNumber} readOnly style={{ background: '#f5f3ee' }} />
                 </div>
                 <div className="form-group">
@@ -435,10 +498,10 @@ export default function NewInvoicePage() {
                   <input type="text" value={new Date().toLocaleDateString('es-GT')} readOnly style={{ background: '#f5f3ee' }} />
                 </div>
                 <div className="form-group">
-                  <label>No. de Orden del Cliente</label>
+                  <label>No. Orden</label>
                   <input
                     type="text"
-                    placeholder="# ORD-000000"
+                    placeholder="ORD-000000"
                     value={formData.orderNumber}
                     onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
                   />
@@ -455,40 +518,37 @@ export default function NewInvoicePage() {
                 />
               </div>
 
-              <div className="form-group">
-                <label>Dirección</label>
-                <input
-                  type="text"
-                  placeholder="Ingrese la dirección"
-                  value={formData.clientAddress}
-                  onChange={(e) => setFormData({ ...formData, clientAddress: e.target.value })}
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Dirección</label>
+                  <input
+                    type="text"
+                    placeholder="Dirección"
+                    value={formData.clientAddress}
+                    onChange={(e) => setFormData({ ...formData, clientAddress: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Ciudad, Estado, ZIP</label>
+                  <input
+                    type="text"
+                    placeholder="Ciudad, estado, ZIP"
+                    value={formData.clientCity}
+                    onChange={(e) => setFormData({ ...formData, clientCity: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Teléfono</label>
+                  <input
+                    type="text"
+                    placeholder="Teléfono"
+                    value={formData.clientPhone}
+                    onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
+                  />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label>Ciudad, Estado, ZIP</label>
-                <input
-                  type="text"
-                  placeholder="Ingrese ciudad, estado y código postal"
-                  value={formData.clientCity}
-                  onChange={(e) => setFormData({ ...formData, clientCity: e.target.value })}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Teléfono</label>
-                <input
-                  type="text"
-                  placeholder="Ingrese número de teléfono"
-                  value={formData.clientPhone}
-                  onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-                />
-              </div>
-
-              <div className="section-title" style={{ marginTop: '24px' }}>
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" strokeWidth="2"/>
-                </svg>
+              <div className="section-title" style={{ marginTop: '4px' }}>
                 Detalle de la Factura
               </div>
 
@@ -496,7 +556,7 @@ export default function NewInvoicePage() {
                 <thead>
                   <tr>
                     <th>Descripción</th>
-                    <th>Cantidad</th>
+                    <th>Cant.</th>
                     <th>Monto</th>
                     <th></th>
                   </tr>
@@ -533,7 +593,7 @@ export default function NewInvoicePage() {
                       </td>
                       <td>
                         <button className="remove-btn" onClick={() => removeItem(index)}>
-                          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                          <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                           </svg>
                         </button>
@@ -544,7 +604,7 @@ export default function NewInvoicePage() {
               </table>
 
               <button className="add-item-btn" onClick={addItem}>
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                   <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                 </svg>
                 Agregar Item
@@ -574,7 +634,7 @@ export default function NewInvoicePage() {
               </div>
             </div>
 
-            <div className="preview-section">
+            <div className="form-section preview-section">
               <div className="preview-title">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>

@@ -21,12 +21,11 @@ export default function Sidebar() {
           flex-shrink: 0;
         }
         .logo-section {
-          padding: 20px 16px;
-          border-bottom: 1px solid #e5e7eb;
+          padding: 20px 16px 16px;
           text-align: center;
         }
         .logo-img-wrapper {
-          max-width: 170px;
+          max-width: 160px;
           margin: 0 auto;
         }
         .logo-img {
@@ -38,33 +37,62 @@ export default function Sidebar() {
         }
         .nav-section {
           flex: 1;
-          padding: 14px 10px;
+          padding: 8px 12px;
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 4px;
         }
         .nav-item {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 12px 16px;
+          padding: 11px 14px;
           border-radius: 10px;
-          color: #4b5563;
+          color: #6b7280;
           text-decoration: none;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
-          transition: all 0.25s ease;
+          transition: all 0.2s ease;
           white-space: nowrap;
         }
         .nav-item:hover {
-          background: #faf8f0;
+          background: #fef9ee;
           color: #c9a227;
         }
         .nav-item.active {
           background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
           color: white;
           font-weight: 600;
-          box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+          box-shadow: 0 2px 8px rgba(201, 162, 39, 0.35);
+        }
+        .icon-box {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: #fef3c7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: background 0.2s ease;
+        }
+        .nav-item:hover .icon-box {
+          background: #fde68a;
+        }
+        .nav-item.active .icon-box {
+          background: rgba(255, 255, 255, 0.25);
+        }
+        .icon-box svg {
+          width: 18px;
+          height: 18px;
+          stroke: #b45309;
+          fill: none;
+          stroke-width: 2;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+        .nav-item.active .icon-box svg {
+          stroke: white;
         }
         .contact-section {
           padding: 14px 16px;
@@ -109,6 +137,10 @@ export default function Sidebar() {
             font-size: 0;
             gap: 0;
           }
+          .icon-box {
+            width: 36px;
+            height: 36px;
+          }
           .contact-section {
             display: none;
           }
@@ -122,32 +154,36 @@ export default function Sidebar() {
       </div>
 
       <nav className="nav-section">
-        <Link href="/dashboard" className={`nav-item ${pathname === '/dashboard' ? 'active' : ''}`}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/>
-            <rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-          Dashboard
-        </Link>
         <Link href="/invoices/new" className={`nav-item ${pathname === '/invoices/new' ? 'active' : ''}`}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="12" y1="18" x2="12" y2="12"/>
-            <line x1="9" y1="15" x2="15" y2="15"/>
-          </svg>
-          Nueva Factura
+          <span className="icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </span>
+          Nuevo Recibo
         </Link>
         <Link href="/invoices/history" className={`nav-item ${pathname === '/invoices/history' ? 'active' : ''}`}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          Historial
+          <span className="icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </span>
+          Historial de Recibos
+        </Link>
+        <Link href="/dashboard" className={`nav-item ${pathname === '/dashboard' ? 'active' : ''}`}>
+          <span className="icon-box">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </span>
+          Configuración
         </Link>
       </nav>
 

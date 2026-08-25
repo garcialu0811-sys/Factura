@@ -91,20 +91,13 @@ export default function InvoiceDetailPage() {
 
     const doc = new jsPDF()
 
-    // Header
-    doc.setFontSize(28)
-    doc.setTextColor(201, 162, 39)
-    doc.text('LG Art', 20, 30)
-    
-    doc.setFontSize(10)
-    doc.setTextColor(42, 42, 42)
-    doc.text('SCULPTOR STUDIO, INC.', 20, 38)
-    doc.text('Foundry & Metal Art Specialists', 20, 44)
-    
-    doc.setFontSize(8)
-    doc.setTextColor(107, 114, 128)
-    doc.text('4ta. Calle 12-34, Zona 1, Guatemala, Guatemala', 20, 50)
-    doc.text('+502 1234 5678 | info@lgartstudio.com', 20, 55)
+    // Add logo image
+    const logoImg = new Image()
+    logoImg.src = '/logo.png'
+    await new Promise((resolve) => {
+      logoImg.onload = resolve
+    })
+    doc.addImage(logoImg, 'PNG', 20, 15, 60, 20)
 
     // Invoice badge
     doc.setFillColor(201, 162, 39)

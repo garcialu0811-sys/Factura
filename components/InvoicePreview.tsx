@@ -50,42 +50,14 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
           gap: 16px;
         }
         .company-logo {
-          width: 70px;
-          height: 70px;
-          border-radius: 50%;
-          border: 2px solid #c9a227;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-          overflow: hidden;
+          max-width: 280px;
         }
-        .company-logo svg {
-          width: 45px;
-          height: 45px;
-          fill: #c9a227;
-        }
-        .company-details .lg-art {
-          font-family: 'Great Vibes', cursive;
-          font-size: 36px;
-          color: #c9a227;
-          line-height: 1;
-          display: block;
-        }
-        .company-details .sculptor {
-          font-family: 'Playfair Display', serif;
-          font-size: 11px;
-          font-weight: 700;
-          color: #2a2a2a;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-        }
-        .company-details .specialists {
-          font-size: 9px;
-          color: #c9a227;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          margin-top: 4px;
+        .invoice-logo {
+          width: 100%;
+          height: auto;
+          mix-blend-mode: multiply;
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
         }
         .invoice-badge {
           text-align: right;
@@ -269,20 +241,12 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
       <div className="preview-header">
         <div className="company-info">
           <div className="company-logo">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 15c-8 0-15 4-18 10-2 4-2 8 0 12l8 15v18c0 3 2 5 5 5h10c3 0 5-2 5-5V42l8-15c2-4 2-8 0-12C65 19 58 15 50 15z"/>
-              <path d="M35 65c0 0-5 8-5 15 0 5 3 10 8 10h29c5 0 8-5 8-10 0-7-5-15-5-15"/>
-            </svg>
+            <img src="/logo.png" alt="LG Art Sculptor Studio" className="invoice-logo" />
           </div>
-          <div className="company-details">
-            <span className="lg-art">LG Art</span>
-            <span className="sculptor">Sculptor Studio, Inc.</span>
-            <span className="specialists">Foundry & Metal Art Specialists</span>
-            <div className="company-contact">
-              <span>📍 4ta. Calle 12-34, Zona 1, Guatemala, Guatemala</span>
-              <span>📞 +502 1234 5678</span>
-              <span>✉️ info@lgartstudio.com</span>
-            </div>
+          <div className="company-contact">
+            <span>📍 4ta. Calle 12-34, Zona 1, Guatemala, Guatemala</span>
+            <span>📞 +502 1234 5678</span>
+            <span>✉️ info@lgartstudio.com</span>
           </div>
         </div>
         <div className="invoice-badge">

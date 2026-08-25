@@ -109,91 +109,15 @@ export default function LoginPage() {
           text-align: center;
         }
         .logo-container {
-          width: 180px;
-          height: 180px;
+          max-width: 320px;
           margin: 0 auto 20px;
         }
-        .logo-circle {
-          width: 180px;
-          height: 180px;
-          border-radius: 50%;
-          border: 3px solid #c9a227;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-          position: relative;
-          overflow: hidden;
-        }
-        .welder-icon svg {
-          width: 120px;
-          height: 120px;
-          fill: #c9a227;
-        }
-        .sparks {
-          position: absolute;
-          bottom: 40px;
-          right: 30px;
-          width: 40px;
-          height: 40px;
-        }
-        .spark {
-          position: absolute;
-          width: 3px;
-          height: 3px;
-          background: #ffd700;
-          border-radius: 50%;
-          box-shadow: 0 0 6px #ffd700, 0 0 12px #ffa500;
-        }
-        .spark:nth-child(1) { top: 0; left: 50%; }
-        .spark:nth-child(2) { top: 10px; left: 30%; }
-        .spark:nth-child(3) { top: 5px; left: 70%; }
-        .spark:nth-child(4) { top: 15px; left: 20%; }
-        .spark:nth-child(5) { top: 8px; left: 80%; }
-        .spark:nth-child(6) { top: 20px; left: 40%; }
-        .spark:nth-child(7) { top: 12px; left: 60%; }
-        .company-name { margin-top: 25px; }
-        .company-name .lg-art {
-          font-family: 'Great Vibes', cursive;
-          font-size: 64px;
-          color: #c9a227;
-          line-height: 1;
-          display: block;
-        }
-        .company-name .sculptor {
-          font-family: 'Playfair Display', serif;
-          font-size: 18px;
-          font-weight: 700;
-          color: #2a2a2a;
-          letter-spacing: 3px;
-          text-transform: uppercase;
-          margin-top: 5px;
-        }
-        .decorative-line {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 20px 0;
-          gap: 10px;
-        }
-        .decorative-line .line {
-          width: 60px;
-          height: 1px;
-          background: #c9a227;
-        }
-        .decorative-line .diamond {
-          width: 8px;
-          height: 8px;
-          background: #c9a227;
-          transform: rotate(45deg);
-        }
-        .specialists {
-          font-family: 'Playfair Display', serif;
-          font-size: 13px;
-          font-weight: 400;
-          color: #c9a227;
-          letter-spacing: 2px;
-          text-transform: uppercase;
+        .login-logo {
+          width: 100%;
+          height: auto;
+          mix-blend-mode: multiply;
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
         }
         .trust-section {
           margin-top: 30px;
@@ -432,47 +356,8 @@ export default function LoginPage() {
         
         <div className="brand-content">
           <div className="logo-container">
-            <div className="logo-circle">
-              <div className="welder-icon">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 15c-8 0-15 4-18 10-2 4-2 8 0 12l8 15v18c0 3 2 5 5 5h10c3 0 5-2 5-5V42l8-15c2-4 2-8 0-12C65 19 58 15 50 15z"/>
-                  <path d="M35 65c0 0-5 8-5 15 0 5 3 10 8 10h29c5 0 8-5 8-10 0-7-5-15-5-15"/>
-                  <path d="M62 35l10-8c2-2 2-5 0-7s-5-2-7 0l-10 8"/>
-                  <circle cx="68" cy="22" r="3"/>
-                  <circle cx="75" cy="28" r="2"/>
-                  <circle cx="72" cy="18" r="2"/>
-                  <circle cx="78" cy="22" r="1.5"/>
-                  <circle cx="65" cy="16" r="1.5"/>
-                  <path d="M25 45l-8-5c-2-1-5 0-6 2s0 5 2 6l8 5"/>
-                  <rect x="22" y="50" width="8" height="15" rx="2"/>
-                  <path d="M70 50l8-5c2-1 5 0 6 2s0 5-2 6l-8 5"/>
-                  <rect x="70" y="55" width="8" height="12" rx="2"/>
-                </svg>
-                <div className="sparks">
-                  <div className="spark"></div>
-                  <div className="spark"></div>
-                  <div className="spark"></div>
-                  <div className="spark"></div>
-                  <div className="spark"></div>
-                  <div className="spark"></div>
-                  <div className="spark"></div>
-                </div>
-              </div>
-            </div>
+            <img src="/logo.png" alt="LG Art Sculptor Studio" className="login-logo" />
           </div>
-
-          <div className="company-name">
-            <span className="lg-art">LG Art</span>
-            <span className="sculptor">Sculptor Studio, Inc.</span>
-          </div>
-
-          <div className="decorative-line">
-            <span className="line"></span>
-            <span className="diamond"></span>
-            <span className="line"></span>
-          </div>
-
-          <p className="specialists">Foundry & Metal Art Specialists</p>
 
           <div className="trust-section">
             <div className="shield-icon">

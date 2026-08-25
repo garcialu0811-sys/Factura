@@ -54,45 +54,16 @@ export default function Sidebar() {
           border-bottom: 1px solid #e5e7eb;
           text-align: center;
         }
-        .logo-circle {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          border: 2px solid #c9a227;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-          margin: 0 auto 12px;
-          overflow: hidden;
+        .logo-img-wrapper {
+          max-width: 200px;
+          margin: 0 auto;
         }
-        .logo-circle svg {
-          width: 50px;
-          height: 50px;
-          fill: #c9a227;
-        }
-        .company-name .lg-art {
-          font-family: 'Great Vibes', cursive;
-          font-size: 32px;
-          color: #c9a227;
-          line-height: 1;
-          display: block;
-        }
-        .company-name .sculptor {
-          font-family: 'Playfair Display', serif;
-          font-size: 10px;
-          font-weight: 700;
-          color: #2a2a2a;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          margin-top: 2px;
-        }
-        .company-name .specialists {
-          font-size: 8px;
-          color: #c9a227;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          margin-top: 4px;
+        .logo-img {
+          width: 100%;
+          height: auto;
+          mix-blend-mode: multiply;
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
         }
         .nav-section {
           flex: 1;
@@ -144,20 +115,8 @@ export default function Sidebar() {
       `}</style>
 
       <div className="logo-section">
-        <div className="logo-circle">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 15c-8 0-15 4-18 10-2 4-2 8 0 12l8 15v18c0 3 2 5 5 5h10c3 0 5-2 5-5V42l8-15c2-4 2-8 0-12C65 19 58 15 50 15z"/>
-            <path d="M35 65c0 0-5 8-5 15 0 5 3 10 8 10h29c5 0 8-5 8-10 0-7-5-15-5-15"/>
-            <path d="M62 35l10-8c2-2 2-5 0-7s-5-2-7 0l-10 8"/>
-            <circle cx="68" cy="22" r="3"/>
-            <circle cx="75" cy="28" r="2"/>
-            <circle cx="72" cy="18" r="2"/>
-          </svg>
-        </div>
-        <div className="company-name">
-          <span className="lg-art">LG Art</span>
-          <span className="sculptor">Sculptor Studio, Inc.</span>
-          <span className="specialists">Foundry & Metal Art Specialists</span>
+        <div className="logo-img-wrapper">
+          <img src="/logo.png" alt="LG Art Sculptor Studio" className="logo-img" />
         </div>
       </div>
 

@@ -356,7 +356,7 @@ export default function LoginPage() {
         
         <div className="brand-content">
           <div className="logo-container">
-            <img src="/logo.png" alt="LG Art Sculptor Studio" className="login-logo" />
+            <img src="/logo-login.png" alt="LG Art Sculptor Studio" className="login-logo" />
           </div>
 
           <div className="trust-section">

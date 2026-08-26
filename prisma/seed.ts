@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  // Create default admin user
   const hashedPassword = await bcrypt.hash('admin123', 10)
   
   await prisma.user.upsert({
@@ -18,7 +17,7 @@ async function main() {
     },
   })
 
-  // Create sample invoices
+  // Sample invoices
   const sampleInvoices = [
     {
       invoiceNumber: 'R-0001246',
@@ -65,137 +64,22 @@ async function main() {
       total: 120.00,
       items: {
         create: [
-          { description: 'Diseño de坯模 para escultura', amount: 120.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001243',
-      clientName: 'Luis Hernández',
-      clientAddress: '3era. Avenida 8-15, Zona 4',
-      clientCity: 'Guatemala, Guatemala 01004',
-      clientPhone: '+502 5555 4567',
-      orderNumber: 'ORD-000565',
-      status: 'paid',
-      subtotal: 450.00,
-      total: 450.00,
-      items: {
-        create: [
-          { description: 'Puerta decorativa forjada', amount: 450.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001242',
-      clientName: 'Empresa XYZ',
-      clientAddress: '10ma. Calle 5-30, Zona 9',
-      clientCity: 'Guatemala, Guatemala 01009',
-      clientPhone: '+502 5555 5678',
-      orderNumber: 'ORD-000564',
-      status: 'paid',
-      subtotal: 1850.00,
-      total: 1850.00,
-      items: {
-        create: [
-          { description: 'Señalización corporativa en metal', amount: 1200.00, quantity: 1 },
-          { description: 'Instalación especializada', amount: 650.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001241',
-      clientName: 'Patricia Gómez',
-      clientAddress: '2da. Avenida 12-40, Zona 1',
-      clientCity: 'Guatemala, Guatemala 01001',
-      clientPhone: '+502 5555 6789',
-      orderNumber: 'ORD-000563',
-      status: 'cancelled',
-      subtotal: 340.00,
-      total: 340.00,
-      items: {
-        create: [
-          { description: 'Figura decorativa artesanal', amount: 340.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001240',
-      clientName: 'José Ramírez',
-      clientAddress: '5ta. Calle 7-25, Zona 5',
-      clientCity: 'Guatemala, Guatemala 01005',
-      clientPhone: '+502 5555 7890',
-      orderNumber: 'ORD-000562',
-      status: 'paid',
-      subtotal: 980.00,
-      total: 980.00,
-      items: {
-        create: [
-          { description: 'Barandal forjado personalizado', amount: 980.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001239',
-      clientName: 'Ana Torres',
-      clientAddress: '8va. Avenida 4-10, Zona 7',
-      clientCity: 'Guatemala, Guatemala 01007',
-      clientPhone: '+502 5555 8901',
-      orderNumber: 'ORD-000561',
-      status: 'pending',
-      subtotal: 150.00,
-      total: 150.00,
-      items: {
-        create: [
-          { description: 'Consultoría de diseño', amount: 150.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001238',
-      clientName: 'Miguel Ángel',
-      clientAddress: '6ta. Calle 9-35, Zona 6',
-      clientCity: 'Guatemala, Guatemala 01006',
-      clientPhone: '+502 5555 9012',
-      orderNumber: 'ORD-000560',
-      status: 'paid',
-      subtotal: 560.00,
-      total: 560.00,
-      items: {
-        create: [
-          { description: 'Mesa de centro con acabado especial', amount: 560.00, quantity: 1 },
-        ],
-      },
-    },
-    {
-      invoiceNumber: 'R-0001237',
-      clientName: 'Sofia Morales',
-      clientAddress: '9na. Avenida 2-20, Zona 8',
-      clientCity: 'Guatemala, Guatemala 01008',
-      clientPhone: '+502 5555 0123',
-      orderNumber: 'ORD-000559',
-      status: 'cancelled',
-      subtotal: 300.00,
-      total: 300.00,
-      items: {
-        create: [
-          { description: 'Cuadro en relieve metálico', amount: 300.00, quantity: 1 },
+          { description: 'Diseño de moldes para escultura', amount: 120.00, quantity: 1 },
         ],
       },
     },
   ]
 
   for (const invoice of sampleInvoices) {
-    await prisma.invoice.create({
-      data: invoice,
-    })
+    await prisma.invoice.create({ data: invoice })
   }
 
-  console.log('Database seeded successfully!')
+  console.log('✅ Database seeded successfully!')
 }
 
 main()
   .catch((e) => {
-    console.error(e)
+    console.error('❌ Error seeding database:', e)
     process.exit(1)
   })
   .finally(async () => {

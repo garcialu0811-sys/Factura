@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -26,7 +26,7 @@ model Invoice {
   clientEmail   String?
   orderNumber   String?
   date          DateTime @default(now())
-  status        String   @default("paid") // paid, pending, cancelled
+  status        String   @default("paid")
   subtotal      Float    @default(0)
   tax           Float    @default(0)
   total         Float    @default(0)

@@ -86,120 +86,41 @@ export default function InvoiceDetailPage() {
   }
 
   const handleDownload = async () => {
-    const { default: jsPDF } = await import('jspdf')
-    const { default: autoTable } = await import('jspdf-autotable')
+    try {
+      const element = document.getElementById('invoice-preview-print')
+      if (!element) {
+        setMessage({ type: 'error', text: 'No se pudo generar el PDF' })
+        return
+      }
 
-    const doc = new jsPDF()
+      const html2canvas = (await import('html2canvas')).default
+      const jsPDF = (await import('jspdf')).default
 
-    // Add logo image
-    const logoImg = new Image()
-    logoImg.src = '/logo-login.png'
-    await new Promise((resolve) => {
-      logoImg.onload = resolve
-    })
-    doc.addImage(logoImg, 'PNG', 20, 15, 60, 20)
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+      })
 
-    // Invoice badge
-    doc.setFillColor(201, 162, 39)
-    doc.roundedRect(140, 20, 50, 12, 2, 2, 'F')
-    doc.setTextColor(255, 255, 255)
-    doc.setFontSize(10)
-    doc.text('FACTURA', 165, 28, { align: 'center' })
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'letter',
+      })
 
-    doc.setTextColor(201, 162, 39)
-    doc.setFontSize(14)
-    doc.text(invoice.invoiceNumber, 165, 42, { align: 'center' })
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
+      const ratio = Math.min(pdfWidth / (canvas.width / 2.835), pdfHeight / (canvas.height / 2.835))
+      const imgX = (pdfWidth - (canvas.width / 2.835) * ratio) / 2
 
-    // Meta info
-    doc.setTextColor(107, 114, 128)
-    doc.setFontSize(10)
-    doc.text(`Fecha: ${new Date(invoice.date).toLocaleDateString('es-GT')}`, 20, 65)
-    if (invoice.orderNumber) {
-      doc.text(`No. de Orden: ${invoice.orderNumber}`, 120, 65)
+      pdf.addImage(imgData, 'PNG', imgX, 0, (canvas.width / 2.835) * ratio, (canvas.height / 2.835) * ratio)
+      pdf.save(`${invoice.invoiceNumber}.pdf`)
+    } catch (err) {
+      console.error('Error generando PDF:', err)
+      setMessage({ type: 'error', text: 'Error al generar el PDF' })
     }
-
-    // Client section
-    doc.setFillColor(245, 243, 238)
-    doc.roundedRect(20, 75, 170, 35, 2, 2, 'F')
-    
-    doc.setFillColor(201, 162, 39)
-    doc.roundedRect(20, 75, 40, 8, 2, 2, 'F')
-    doc.setTextColor(255, 255, 255)
-    doc.setFontSize(8)
-    doc.text('RECIBIDO DE', 40, 80, { align: 'center' })
-
-    doc.setTextColor(42, 42, 42)
-    doc.setFontSize(10)
-    doc.text(`Nombre: ${invoice.clientName}`, 25, 90)
-    doc.text(`Dirección: ${invoice.clientAddress || '—'}`, 25, 96)
-    doc.text(`Ciudad: ${invoice.clientCity || '—'}`, 25, 102)
-    doc.text(`Teléfono: ${invoice.clientPhone || '—'}`, 110, 90)
-
-    // Items table
-    const items = invoice.items.map((item: any) => [
-      item.description,
-      item.quantity.toString(),
-      `Q${item.amount.toFixed(2)}`
-    ])
-
-    autoTable(doc, {
-      startY: 120,
-      head: [['Descripción', 'Cantidad', 'Monto']],
-      body: items,
-      theme: 'grid',
-      headStyles: {
-        fillColor: [201, 162, 39],
-        fontSize: 10,
-        fontStyle: 'bold',
-      },
-      styles: {
-        fontSize: 10,
-      },
-      columnStyles: {
-        1: { halign: 'center', cellWidth: 30 },
-        2: { halign: 'right', cellWidth: 40 },
-      },
-    })
-
-    // Total
-    const finalY = (doc as any).lastAutoTable.finalY || 120
-    doc.setFillColor(245, 243, 238)
-    doc.roundedRect(120, finalY + 10, 70, 15, 2, 2, 'F')
-    doc.setDrawColor(201, 162, 39)
-    doc.roundedRect(120, finalY + 10, 70, 15, 2, 2, 'S')
-    
-    doc.setTextColor(107, 114, 128)
-    doc.setFontSize(10)
-    doc.text('TOTAL:', 125, finalY + 20)
-    doc.setTextColor(201, 162, 39)
-    doc.setFontSize(14)
-    doc.text(`Q${invoice.total.toFixed(2)}`, 185, finalY + 20, { align: 'right' })
-
-    // Thank you
-    doc.setFontSize(16)
-    doc.setTextColor(201, 162, 39)
-    doc.text('¡Gracias por su preferencia!', 105, finalY + 35, { align: 'center' })
-
-    // Signatures
-    doc.setDrawColor(42, 42, 42)
-    doc.line(30, finalY + 60, 80, finalY + 60)
-    doc.line(120, finalY + 60, 170, finalY + 60)
-
-    doc.setTextColor(42, 42, 42)
-    doc.setFontSize(10)
-    doc.text('Jose Gomez', 55, finalY + 67, { align: 'center' })
-    doc.text('Cliente', 145, finalY + 67, { align: 'center' })
-
-    doc.setFontSize(8)
-    doc.setTextColor(107, 114, 128)
-    doc.text('Firma del Dueño', 55, finalY + 72, { align: 'center' })
-    doc.text('Firma del Cliente', 145, finalY + 72, { align: 'center' })
-
-    // Footer
-    doc.setFontSize(8)
-    doc.text('© 2026 LG Art Sculptor Studio, Inc. Todos los derechos reservados.', 105, 285, { align: 'center' })
-
-    doc.save(`${invoice.invoiceNumber}.pdf`)
   }
 
   const getStatusBadge = (status: string) => {

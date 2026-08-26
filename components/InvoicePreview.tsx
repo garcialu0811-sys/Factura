@@ -21,143 +21,163 @@ interface InvoiceData {
 export default function InvoicePreview({ data }: { data: InvoiceData }) {
   const formatDate = (dateStr: string) => {
     if (!dateStr) return new Date().toLocaleDateString('es-GT')
-    return new Date(dateStr).toLocaleDateString('es-GT')
+    try { return new Date(dateStr).toLocaleDateString('es-GT') } catch { return dateStr }
+  }
+
+  const hasContent = data.clientName || data.items.some(i => i.description || i.amount > 0)
+
+  if (!hasContent) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full min-h-[420px] gap-4 text-gray-300 select-none">
+        <svg viewBox="0 0 24 24" className="w-16 h-16 fill-current opacity-30">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+        </svg>
+        <p className="text-xs font-semibold tracking-widest uppercase text-gray-300">El recibo aparecerá aquí</p>
+        <p className="text-[10px] text-gray-200 font-medium">Completa el formulario para ver la vista previa</p>
+      </div>
+    )
   }
 
   return (
-    <div className="relative bg-white p-5 md:p-6 rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col justify-between overflow-hidden min-h-[720px] font-sans no-print select-none">
-      
-      {/* Gold corner ribbon decorations */}
-      {/* Top-Left */}
-      <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
-        <div className="w-[100px] h-[18px] bg-gradient-to-r from-[#dfba4d] to-[#c1952e] absolute top-[12px] left-[-30px] -rotate-45 border-b border-[#a6872d]/30 shadow-sm"></div>
-        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute top-[34px] left-[-30px] -rotate-45"></div>
-      </div>
-      {/* Top-Right */}
-      <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
-        <div className="w-[100px] h-[18px] bg-gradient-to-l from-[#dfba4d] to-[#c1952e] absolute top-[12px] right-[-30px] rotate-45 border-b border-[#a6872d]/30 shadow-sm"></div>
-        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute top-[34px] right-[-30px] rotate-45"></div>
-      </div>
-      {/* Bottom-Left */}
-      <div className="absolute bottom-0 left-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
-        <div className="w-[100px] h-[18px] bg-gradient-to-r from-[#dfba4d] to-[#c1952e] absolute bottom-[12px] left-[-30px] rotate-45 border-t border-[#a6872d]/30 shadow-sm"></div>
-        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute bottom-[34px] left-[-30px] rotate-45"></div>
-      </div>
-      {/* Bottom-Right */}
-      <div className="absolute bottom-0 right-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
-        <div className="w-[100px] h-[18px] bg-gradient-to-l from-[#dfba4d] to-[#c1952e] absolute bottom-[12px] right-[-30px] -rotate-45 border-t border-[#a6872d]/30 shadow-sm"></div>
-        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute bottom-[34px] right-[-30px] -rotate-45"></div>
-      </div>
+    <div
+      id="invoice-preview-print"
+      className="relative bg-white font-sans"
+      style={{ fontFamily: 'Arial, sans-serif', minHeight: '720px' }}
+    >
+      {/* Outer gold double border frame */}
+      <div className="border-4 border-double border-[#c9a227]/50 m-2 p-5 flex flex-col gap-4 min-h-[700px] relative">
 
-      {/* Double Gold Line Border Frame */}
-      <div className="border-4 border-double border-[#c9a227]/40 p-4 md:p-5 flex-1 flex flex-col justify-between rounded-xl relative">
-        
-        {/* Header Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
-          <div className="flex-1">
-            <div className="max-w-[170px] w-full">
-              <img
-                src="/logo-login.png"
-                alt="LG Art"
-                className="w-full h-auto mix-blend-multiply image-render-crisp"
-                style={{ imageRendering: '-webkit-optimize-contrast' }}
-              />
-            </div>
-            {/* Company Contact Info */}
-            <div className="text-[9px] text-gray-500 font-medium flex flex-col gap-0.5 mt-2">
-              <span className="flex items-center gap-1">
-                📍 4ta. Calle 12-34, Zona 1, Guatemala
-              </span>
-              <span className="flex items-center gap-1">
-                📞 +502 1234 5678 &nbsp;&nbsp; ✉️ info@lgartstudio.com
-              </span>
+        {/* Corner decorations */}
+        <div className="absolute top-[-2px] left-[-2px] w-6 h-6 border-t-4 border-l-4 border-[#c9a227]" />
+        <div className="absolute top-[-2px] right-[-2px] w-6 h-6 border-t-4 border-r-4 border-[#c9a227]" />
+        <div className="absolute bottom-[-2px] left-[-2px] w-6 h-6 border-b-4 border-l-4 border-[#c9a227]" />
+        <div className="absolute bottom-[-2px] right-[-2px] w-6 h-6 border-b-4 border-r-4 border-[#c9a227]" />
+
+        {/* ── HEADER ── */}
+        <div className="flex justify-between items-start gap-3">
+          {/* Logo + company info */}
+          <div className="flex flex-col gap-1">
+            <img
+              src="/logo-login.png"
+              alt="LG Art Sculptor Studio"
+              className="w-[120px] h-auto mix-blend-multiply"
+              style={{ imageRendering: '-webkit-optimize-contrast' }}
+            />
+            <div className="text-[8px] text-gray-500 leading-relaxed mt-1">
+              <div>Foundry. Specializing in: Bronze Casting, Patinas,</div>
+              <div>Molding, Welding, High Quality</div>
+              <div>Restorations &amp; Enlargements</div>
             </div>
           </div>
 
-          {/* Receipt Badge and Details */}
-          <div className="flex flex-col items-end shrink-0">
-            <span className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold px-4 py-1 text-[10px] rounded-md tracking-widest uppercase border border-[#a6872d]/20 mb-1.5 shadow-sm">
-              RECIBO
+          {/* Receipt badge + number */}
+          <div className="flex flex-col items-end gap-1">
+            <span
+              className="text-white text-[10px] font-bold tracking-widest uppercase px-5 py-1 rounded-sm"
+              style={{ background: 'linear-gradient(135deg, #dfba4d, #c1952e)' }}
+            >
+              FACTURA
             </span>
-            <span className="bg-gray-50 border border-gray-200/60 rounded-lg px-3 py-1 font-bold text-gray-800 text-xs tracking-wider block text-center min-w-[110px]">
+            <span className="text-[#c9a227] font-extrabold text-base tracking-wider text-right">
               {data.invoiceNumber || 'R-0000000'}
             </span>
-            <div className="text-[9px] text-gray-600 mt-2 flex flex-col gap-0.5 items-end font-medium">
-              <div>
-                <span className="text-gray-400 mr-1.5 font-normal">Fecha:</span>
-                <span className="font-semibold text-gray-900">{formatDate(data.date)}</span>
-              </div>
+            <div className="text-[9px] text-gray-600 text-right leading-snug">
+              <div><span className="text-gray-400">Fecha: </span><span className="font-semibold">{formatDate(data.date)}</span></div>
               {data.orderNumber && (
-                <div>
-                  <span className="text-gray-400 mr-1.5 font-normal">No. de Orden:</span>
-                  <span className="font-semibold text-gray-900">{data.orderNumber}</span>
-                </div>
+                <div><span className="text-gray-400">No. de Orden: </span><span className="font-semibold">{data.orderNumber}</span></div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Client Details Section ("RECIBIDO DE") */}
-        <div className="mb-4">
-          <div className="flex justify-center mb-1.5">
-            <span className="bg-[#c9a227] text-white px-6 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider">
-              Recibido De
-            </span>
+        {/* Company contact divider line */}
+        <div className="flex items-center gap-2 text-[8px] text-gray-400 font-medium border-t border-[#c9a227]/30 pt-2">
+          <span>📍 4ta. Calle 12-34, Zona 1, Guatemala</span>
+          <span className="text-[#c9a227]">|</span>
+          <span>📞 +502 1234 5678</span>
+          <span className="text-[#c9a227]">|</span>
+          <span>✉️ info@lgartstudio.com</span>
+        </div>
+
+        {/* ── CLIENT SECTION ── */}
+        <div>
+          <div
+            className="text-white text-[9px] font-bold uppercase tracking-widest px-4 py-0.5 rounded-sm mb-2 inline-block"
+            style={{ background: '#c9a227' }}
+          >
+            Recibido De
           </div>
-          <div className="border border-[#c9a227]/25 rounded-xl bg-[#faf9f5]/30 p-3 text-[10px] text-gray-700 font-medium">
-            <div className="grid grid-cols-[105px_10px_1fr] gap-y-1 leading-relaxed">
-              <span className="text-gray-500 font-semibold">Nombre del Cliente</span>
-              <span className="text-gray-400 text-center">:</span>
+          <div className="border border-[#c9a227]/20 rounded bg-[#faf9f6] p-3 text-[10px] grid gap-1">
+            <div className="grid grid-cols-[100px_8px_1fr] gap-x-1 items-baseline">
+              <span className="text-gray-500 font-semibold">Nombre</span>
+              <span className="text-gray-400">:</span>
               <span className="font-bold text-gray-900">{data.clientName || '—'}</span>
-
+            </div>
+            <div className="grid grid-cols-[100px_8px_1fr] gap-x-1 items-baseline">
               <span className="text-gray-500 font-semibold">Dirección</span>
-              <span className="text-gray-400 text-center">:</span>
-              <span className="font-semibold text-gray-800">{data.clientAddress || '—'}</span>
-
-              <span className="text-gray-500 font-semibold">Ciudad, Estado, ZIP</span>
-              <span className="text-gray-400 text-center">:</span>
-              <span className="font-semibold text-gray-800">{data.clientCity || '—'}</span>
-
+              <span className="text-gray-400">:</span>
+              <span className="text-gray-800">{data.clientAddress || '—'}</span>
+            </div>
+            <div className="grid grid-cols-[100px_8px_1fr] gap-x-1 items-baseline">
+              <span className="text-gray-500 font-semibold">Ciudad</span>
+              <span className="text-gray-400">:</span>
+              <span className="text-gray-800">{data.clientCity || '—'}</span>
+            </div>
+            <div className="grid grid-cols-[100px_8px_1fr] gap-x-1 items-baseline">
               <span className="text-gray-500 font-semibold">Teléfono</span>
-              <span className="text-gray-400 text-center">:</span>
-              <span className="font-semibold text-gray-800">{data.clientPhone || '—'}</span>
+              <span className="text-gray-400">:</span>
+              <span className="text-gray-800">{data.clientPhone || '—'}</span>
             </div>
           </div>
         </div>
 
-        {/* Items Table */}
-        <div className="flex-1 min-h-[140px] flex flex-col justify-between">
-          <table className="w-full border-collapse text-[10px] mt-1">
+        {/* ── ITEMS TABLE ── */}
+        <div className="flex-1">
+          <table className="w-full border-collapse text-[10px]">
             <thead>
-              <tr className="border-b border-[#c9a227]/40">
-                <th className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold py-1.5 px-3 text-left uppercase tracking-wider rounded-l-md">
+              <tr>
+                <th
+                  className="text-left py-2 px-3 text-[9px] font-bold uppercase tracking-wider text-[#4a3505] rounded-l-sm"
+                  style={{ background: 'linear-gradient(135deg, #dfba4d, #c1952e)' }}
+                >
                   Descripción
                 </th>
-                <th className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold py-1.5 px-2 text-center uppercase tracking-wider w-12">
-                  Cant.
+                <th
+                  className="py-2 px-2 text-center text-[9px] font-bold uppercase tracking-wider text-[#4a3505] w-14"
+                  style={{ background: 'linear-gradient(135deg, #dfba4d, #c1952e)' }}
+                >
+                  Cantidad
                 </th>
-                <th className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold py-1.5 px-3 text-right uppercase tracking-wider rounded-r-md w-28">
+                <th
+                  className="py-2 px-3 text-right text-[9px] font-bold uppercase tracking-wider text-[#4a3505] w-24 rounded-r-sm"
+                  style={{ background: 'linear-gradient(135deg, #dfba4d, #c1952e)' }}
+                >
                   Monto
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-dashed divide-gray-200">
-              {data.items.length > 0 ? (
-                data.items.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-50/40">
-                    <td className="py-2.5 px-3 text-gray-700 font-semibold leading-relaxed">
-                      {item.description || 'Descripción del producto o servicio'}
-                    </td>
-                    <td className="py-2.5 px-2 text-center font-bold text-gray-500">{item.quantity || 1}</td>
-                    <td className="py-2.5 px-3 text-right font-bold text-gray-900">
-                      Q{(item.amount * (item.quantity || 1)).toFixed(2)}
-                    </td>
-                  </tr>
-                ))
+            <tbody>
+              {data.items.filter(i => i.description || i.amount > 0).length > 0 ? (
+                data.items
+                  .filter(i => i.description || i.amount > 0)
+                  .map((item, idx) => (
+                    <tr key={idx} className="border-b border-dashed border-gray-200">
+                      <td className="py-2.5 px-3 text-gray-700 font-medium leading-snug">
+                        {item.description || '—'}
+                      </td>
+                      <td className="py-2.5 px-2 text-center text-gray-600 font-semibold">
+                        {item.quantity || 1}
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-gray-900 font-bold">
+                        Q{(item.amount * (item.quantity || 1)).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))
               ) : (
                 <tr>
-                  <td colSpan={3} className="py-8 text-center text-gray-400 font-medium tracking-wide">
-                    Agrega ítems para visualizar el detalle
+                  <td colSpan={3} className="py-6 text-center text-gray-300 text-[10px]">
+                    Sin conceptos registrados
                   </td>
                 </tr>
               )}
@@ -165,51 +185,61 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
           </table>
         </div>
 
-        {/* Total Section */}
-        <div className="flex justify-end mt-4">
-          <div className="bg-[#faf8f4] border-2 border-[#dfba4d] rounded-xl px-5 py-2 flex items-center gap-4 min-w-[200px] shadow-sm">
-            <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest">TOTAL</span>
-            <span className="text-lg font-black text-[#c9a227] flex-1 text-right">
-              Q{data.total.toFixed(2)}
-            </span>
+        {/* ── TOTAL ── */}
+        <div className="flex justify-end">
+          <div
+            className="flex items-center gap-6 px-5 py-2.5 rounded-sm border"
+            style={{
+              borderColor: '#c9a227',
+              background: '#faf9f6',
+              minWidth: 200,
+            }}
+          >
+            <span className="text-[9px] font-extrabold text-gray-500 uppercase tracking-widest">TOTAL:</span>
+            <span className="text-base font-black text-[#c9a227] ml-auto">Q{data.total.toFixed(2)}</span>
           </div>
         </div>
 
-        {/* Thank You Footer */}
-        <div className="text-center mt-3 pt-2 border-t border-gray-100">
-          <p className="font-vibes text-xl text-[#c9a227] tracking-wider font-semibold">
+        {/* ── THANK YOU ── */}
+        <div className="text-center border-t border-gray-100 pt-3">
+          <p className="text-[#c9a227] font-bold text-sm tracking-wide" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
             ¡Gracias por su preferencia!
           </p>
         </div>
 
-        {/* Signatures & Seal */}
-        <div className="flex justify-between items-end mt-3 pt-2">
-          {/* Owner Signature */}
-          <div className="text-center w-28 flex flex-col items-center">
-            <span className="font-vibes text-sm text-gray-400 h-6 select-none">Jose Gomez</span>
-            <div className="w-full border-t border-gray-400 pt-1 flex flex-col">
-              <span className="text-[9.5px] font-bold text-gray-800 leading-tight">Jose Gomez</span>
-              <span className="text-[7.5px] text-gray-400 font-medium">Firma del Dueño</span>
+        {/* ── SIGNATURES ── */}
+        <div className="flex justify-between items-end pt-2">
+          <div className="flex flex-col items-center gap-1 w-28">
+            <div className="w-full border-t border-gray-500 pt-1 text-center">
+              <p className="text-[9px] font-bold text-gray-800">Jose Gomez</p>
+              <p className="text-[8px] text-gray-400">Firma del Dueño</p>
             </div>
           </div>
 
-          {/* Central Logo Stamp */}
-          <div className="w-14 h-14 bg-gradient-to-br from-[#dfba4d] to-[#c1952e] rounded-full p-[2px] shadow-md flex items-center justify-center shrink-0">
-            <div className="w-full h-full bg-[#fefdfa] rounded-full border border-dashed border-white/60 flex flex-col items-center justify-center text-[#c9a227] select-none">
-              <span className="font-vibes text-xs leading-none font-bold">LG</span>
-              <span className="font-playfair text-[6.5px] uppercase font-bold tracking-widest mt-0.5">Art</span>
-              <span className="text-[4.5px] uppercase font-bold text-[#c9a227]/70 leading-none">Studio</span>
+          {/* Stamp */}
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #dfba4d, #c1952e)' }}
+          >
+            <div className="w-10 h-10 rounded-full bg-white border-2 border-dashed border-[#c9a227]/60 flex flex-col items-center justify-center">
+              <span className="text-[8px] font-black text-[#c9a227] leading-none" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>LG</span>
+              <span className="text-[5px] font-bold text-[#c9a227] uppercase tracking-wider leading-none">Art</span>
             </div>
           </div>
 
-          {/* Client Signature */}
-          <div className="text-center w-28 flex flex-col items-center">
-            <span className="font-vibes text-sm text-gray-400 h-6 select-none">Cliente</span>
-            <div className="w-full border-t border-gray-400 pt-1 flex flex-col">
-              <span className="text-[9.5px] font-bold text-gray-800 leading-tight">Cliente</span>
-              <span className="text-[7.5px] text-gray-400 font-medium">Firma del Cliente</span>
+          <div className="flex flex-col items-center gap-1 w-28">
+            <div className="w-full border-t border-gray-500 pt-1 text-center">
+              <p className="text-[9px] font-bold text-gray-800">Cliente</p>
+              <p className="text-[8px] text-gray-400">Firma del Cliente</p>
             </div>
           </div>
+        </div>
+
+        {/* ── FOOTER ── */}
+        <div className="text-center border-t border-gray-100 pt-2">
+          <p className="text-[7px] text-gray-400">
+            © 2026 LG Art Sculptor Studio, Inc. Todos los derechos reservados.
+          </p>
         </div>
 
       </div>

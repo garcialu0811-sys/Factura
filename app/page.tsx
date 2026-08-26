@@ -114,7 +114,7 @@ export default function LoginPage() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+          <form onSubmit={handleLogin} className="flex flex-col gap-4" autoComplete="off">
             {/* Username */}
             <div className="flex flex-col">
               <label htmlFor="username" className="text-xs font-semibold text-gray-700 mb-1.5 tracking-wide">
@@ -130,6 +130,7 @@ export default function LoginPage() {
                   placeholder="Ingresa tu nombre de usuario"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  autoComplete="off"
                   className="w-full pl-10 pr-4 py-3 text-xs bg-white border border-gray-200 rounded-xl outline-none focus:border-[#c9a227] focus:ring-1 focus:ring-[#c9a227]/25 transition-all text-gray-800 placeholder-gray-400 font-medium"
                   required
                 />
@@ -151,6 +152,7 @@ export default function LoginPage() {
                   placeholder="Ingresa tu contraseña"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="new-password"
                   className="w-full pl-10 pr-10 py-3 text-xs bg-white border border-gray-200 rounded-xl outline-none focus:border-[#c9a227] focus:ring-1 focus:ring-[#c9a227]/25 transition-all text-gray-800 placeholder-gray-400 font-medium"
                   required
                 />

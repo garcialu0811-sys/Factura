@@ -51,10 +51,10 @@ export default function DashboardPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const styles: Record<string, React.CSSProperties> = {
-      paid: { background: '#dcfce7', color: '#16a34a' },
-      pending: { background: '#fef3c7', color: '#d97706' },
-      cancelled: { background: '#fee2e2', color: '#dc2626' },
+    const styles: Record<string, string> = {
+      paid: 'bg-green-50 text-green-600 border border-green-200/50',
+      pending: 'bg-amber-50 text-amber-600 border border-amber-200/50',
+      cancelled: 'bg-red-50 text-red-600 border border-red-200/50',
     }
     const labels: Record<string, string> = {
       paid: 'Pagado',
@@ -62,327 +62,156 @@ export default function DashboardPage() {
       cancelled: 'Cancelado',
     }
     return (
-      <span style={{
-        ...styles[status],
-        padding: '4px 12px',
-        borderRadius: '20px',
-        fontSize: '12px',
-        fontWeight: 600,
-      }}>
+      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase ${styles[status]}`}>
         {labels[status]}
       </span>
     )
   }
 
   return (
-    <div className="flex min-h-screen bg-cream-50">
-      <style jsx>{`
-        .main-content {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
-        .content-area {
-          flex: 1;
-          padding: 24px;
-        }
-        .welcome-section {
-          background: linear-gradient(135deg, #f5edd6 0%, #e8dcc4 100%);
-          border-radius: 16px;
-          padding: 32px;
-          margin-bottom: 24px;
-          position: relative;
-          overflow: hidden;
-        }
-        .welcome-section::before {
-          content: '';
-          position: absolute;
-          top: -30px;
-          right: -30px;
-          width: 150px;
-          height: 150px;
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          border-radius: 50%;
-          opacity: 0.2;
-        }
-        .welcome-section h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: 28px;
-          font-weight: 700;
-          color: #1a1a1a;
-          margin-bottom: 8px;
-        }
-        .welcome-section p {
-          color: #6b7280;
-          font-size: 14px;
-        }
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
-          margin-bottom: 24px;
-        }
-        .stat-card {
-          background: white;
-          border-radius: 12px;
-          padding: 24px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-          transition: transform 0.2s;
-        }
-        .stat-card:hover {
-          transform: translateY(-2px);
-        }
-        .stat-card .icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 16px;
-        }
-        .stat-card .icon svg {
-          width: 24px;
-          height: 24px;
-        }
-        .stat-card .icon.total {
-          background: #dbeafe;
-        }
-        .stat-card .icon.total svg {
-          fill: #2563eb;
-        }
-        .stat-card .icon.paid {
-          background: #dcfce7;
-        }
-        .stat-card .icon.paid svg {
-          fill: #16a34a;
-        }
-        .stat-card .icon.pending {
-          background: #fef3c7;
-        }
-        .stat-card .icon.pending svg {
-          fill: #d97706;
-        }
-        .stat-card .icon.cancelled {
-          background: #fee2e2;
-        }
-        .stat-card .icon.cancelled svg {
-          fill: #dc2626;
-        }
-        .stat-card .label {
-          font-size: 13px;
-          color: #6b7280;
-          margin-bottom: 4px;
-        }
-        .stat-card .value {
-          font-size: 28px;
-          font-weight: 700;
-          color: #1a1a1a;
-        }
-        .recent-section {
-          background: white;
-          border-radius: 12px;
-          padding: 24px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .section-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-        .section-header h3 {
-          font-family: 'Playfair Display', serif;
-          font-size: 18px;
-          font-weight: 700;
-          color: #1a1a1a;
-        }
-        .view-all {
-          color: #c9a227;
-          text-decoration: none;
-          font-size: 14px;
-          font-weight: 500;
-        }
-        .view-all:hover {
-          text-decoration: underline;
-        }
-        .invoice-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .invoice-table th {
-          text-align: left;
-          padding: 12px 16px;
-          background: #f5f3ee;
-          font-size: 12px;
-          font-weight: 600;
-          color: #6b7280;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-        .invoice-table th:first-child {
-          border-radius: 8px 0 0 8px;
-        }
-        .invoice-table th:last-child {
-          border-radius: 0 8px 8px 0;
-        }
-        .invoice-table td {
-          padding: 16px;
-          border-bottom: 1px solid #e5e7eb;
-          font-size: 14px;
-        }
-        .invoice-table tr:hover {
-          background: #f5f3ee;
-        }
-        .invoice-number {
-          font-weight: 600;
-          color: #c9a227;
-        }
-        .actions {
-          display: flex;
-          gap: 8px;
-        }
-        .action-btn {
-          width: 32px;
-          height: 32px;
-          border-radius: 6px;
-          border: 1px solid #e5e7eb;
-          background: white;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s;
-        }
-        .action-btn:hover {
-          background: #f5f3ee;
-          border-color: #c9a227;
-        }
-        .action-btn svg {
-          width: 16px;
-          height: 16px;
-          fill: #6b7280;
-        }
-        .quick-actions {
-          display: flex;
-          gap: 16px;
-          margin-top: 24px;
-        }
-        .quick-action-btn {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          padding: 16px;
-          background: white;
-          border: 2px dashed #c9a227;
-          border-radius: 12px;
-          color: #c9a227;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-decoration: none;
-        }
-        .quick-action-btn:hover {
-          background: #c9a227;
-          color: white;
-        }
-        .quick-action-btn svg {
-          width: 20px;
-          height: 20px;
-          fill: currentColor;
-        }
-      `}</style>
-
+    <div className="flex h-screen bg-[#f5f3ee] overflow-hidden">
       <Sidebar />
       
-      <div className="main-content">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         <Header title="Dashboard" />
         
-        <div className="content-area">
-          <div className="welcome-section">
-            <h2>Bienvenido al Sistema de Facturación</h2>
-            <p>Gestiona tus facturas de manera fácil y profesional</p>
+        <div className="flex-1 p-6 overflow-y-auto">
+          {/* Welcome Banner */}
+          <div className="bg-gradient-to-r from-gold-100 to-cream-50 border border-[#e5dec9]/30 rounded-2xl p-8 mb-6 relative overflow-hidden shadow-sm">
+            <div className="absolute top-[-30px] right-[-30px] width-[150px] height-[150px] bg-gradient-to-br from-[#dfba4d] to-[#c1952e] rounded-full opacity-[0.08]"></div>
+            <h2 className="font-playfair text-2xl md:text-3xl font-bold text-gray-900 tracking-wide mb-1">
+              Bienvenido al Sistema de Facturación
+            </h2>
+            <p className="text-xs text-gray-500 font-medium">
+              Gestiona tus facturas de manera fácil y profesional
+            </p>
           </div>
 
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="icon total">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+            {/* Total */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                <svg className="w-5.5 h-5.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                </svg>
               </div>
-              <div className="label">Total Facturas</div>
-              <div className="value">{stats.total}</div>
+              <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Total Facturas</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
             </div>
-            <div className="stat-card">
-              <div className="icon paid">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+
+            {/* Pagadas */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <div className="w-11 h-11 rounded-xl bg-green-50 text-green-600 flex items-center justify-center mb-4">
+                <svg className="w-5.5 h-5.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
               </div>
-              <div className="label">Pagadas</div>
-              <div className="value">{stats.paid}</div>
+              <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Pagadas</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.paid}</div>
             </div>
-            <div className="stat-card">
-              <div className="icon pending">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+
+            {/* Pendientes */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4">
+                <svg className="w-5.5 h-5.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                </svg>
               </div>
-              <div className="label">Pendientes</div>
-              <div className="value">{stats.pending}</div>
+              <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Pendientes</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.pending}</div>
             </div>
-            <div className="stat-card">
-              <div className="icon cancelled">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>
+
+            {/* Canceladas */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <div className="w-11 h-11 rounded-xl bg-red-50 text-red-600 flex items-center justify-center mb-4">
+                <svg className="w-5.5 h-5.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" />
+                </svg>
               </div>
-              <div className="label">Canceladas</div>
-              <div className="value">{stats.cancelled}</div>
+              <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Canceladas</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.cancelled}</div>
             </div>
           </div>
 
-          <div className="recent-section">
-            <div className="section-header">
-              <h3>Facturas Recientes</h3>
-              <Link href="/invoices/history" className="view-all">Ver todas →</Link>
+          {/* Recent Invoices Card */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-playfair text-lg font-bold text-gray-900 tracking-wide">
+                Facturas Recientes
+              </h3>
+              <Link href="/invoices/history" className="text-xs font-bold text-[#c9a227] hover:underline flex items-center gap-1">
+                Ver todas <span>→</span>
+              </Link>
             </div>
             
-            <table className="invoice-table">
-              <thead>
-                <tr>
-                  <th>No. Factura</th>
-                  <th>Fecha</th>
-                  <th>Cliente</th>
-                  <th>Total</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentInvoices.map((invoice: any) => (
-                  <tr key={invoice.id}>
-                    <td className="invoice-number">{invoice.invoiceNumber}</td>
-                    <td>{new Date(invoice.date).toLocaleDateString('es-GT')}</td>
-                    <td>{invoice.clientName}</td>
-                    <td>Q{invoice.total.toFixed(2)}</td>
-                    <td>{getStatusBadge(invoice.status)}</td>
-                    <td>
-                      <div className="actions">
-                        <Link href={`/invoices/${invoice.id}`} className="action-btn">
-                          <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                        </Link>
-                      </div>
-                    </td>
+            <div className="overflow-x-auto -mx-6">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left py-3 px-6 bg-[#fcfbfa] text-[10px] font-bold text-gray-400 uppercase tracking-wider">No. Factura</th>
+                    <th className="text-left py-3 px-6 bg-[#fcfbfa] text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fecha</th>
+                    <th className="text-left py-3 px-6 bg-[#fcfbfa] text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cliente</th>
+                    <th className="text-left py-3 px-6 bg-[#fcfbfa] text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total</th>
+                    <th className="text-left py-3 px-6 bg-[#fcfbfa] text-[10px] font-bold text-gray-400 uppercase tracking-wider">Estado</th>
+                    <th className="text-left py-3 px-6 bg-[#fcfbfa] text-[10px] font-bold text-gray-400 uppercase tracking-wider">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {recentInvoices.map((invoice: any) => (
+                    <tr key={invoice.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="py-4 px-6 text-xs font-bold text-[#c9a227]">{invoice.invoiceNumber}</td>
+                      <td className="py-4 px-6 text-xs text-gray-600 font-medium">
+                        {new Date(invoice.date).toLocaleDateString('es-GT')}
+                      </td>
+                      <td className="py-4 px-6 text-xs text-gray-700 font-semibold">{invoice.clientName}</td>
+                      <td className="py-4 px-6 text-xs text-gray-900 font-bold">Q{invoice.total.toFixed(2)}</td>
+                      <td className="py-4 px-6 text-xs">{getStatusBadge(invoice.status)}</td>
+                      <td className="py-4 px-6 text-xs">
+                        <Link
+                          href={`/invoices/${invoice.id}`}
+                          className="w-8 h-8 rounded-lg border border-gray-200 hover:border-[#c9a227] hover:bg-amber-50/40 flex items-center justify-center transition-colors text-gray-400 hover:text-[#c9a227]"
+                          title="Ver detalle"
+                        >
+                          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                          </svg>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                  {recentInvoices.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="py-8 text-center text-xs text-gray-400 font-medium">
+                        No hay facturas recientes
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="quick-actions">
-            <Link href="/invoices/new" className="quick-action-btn">
-              <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          {/* Quick Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <Link
+              href="/invoices/new"
+              className="flex-1 py-4 bg-white border-2 border-dashed border-[#c9a227]/40 text-[#c9a227] hover:border-[#c9a227] hover:bg-gradient-to-r hover:from-[#dfba4d] hover:to-[#c1952e] hover:text-[#4a3505] rounded-2xl flex items-center justify-center gap-2 font-bold text-xs tracking-wider uppercase transition-all duration-200 shadow-sm"
+            >
+              <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 stroke-current fill-none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
               Nueva Factura
             </Link>
-            <Link href="/invoices/history" className="quick-action-btn">
-              <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+            <Link
+              href="/invoices/history"
+              className="flex-1 py-4 bg-white border-2 border-dashed border-[#c9a227]/40 text-[#c9a227] hover:border-[#c9a227] hover:bg-gradient-to-r hover:from-[#dfba4d] hover:to-[#c1952e] hover:text-[#4a3505] rounded-2xl flex items-center justify-center gap-2 font-bold text-xs tracking-wider uppercase transition-all duration-200 shadow-sm"
+            >
+              <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 stroke-current fill-none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 8v4l3 3" />
+                <path d="M3.05 11a9 9 0 1 1 .1 4" />
+              </svg>
               Ver Historial
             </Link>
           </div>

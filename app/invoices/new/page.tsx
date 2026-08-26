@@ -122,527 +122,295 @@ export default function NewInvoicePage() {
   }
 
   return (
-    <div className="app-layout">
-      <style jsx global>{`
-        html, body {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          overflow: hidden;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background: #f5f3ee;
-        }
-      `}</style>
-
-      <style jsx>{`
-        .app-layout {
-          display: flex;
-          height: 100vh;
-          overflow: hidden;
-        }
-        .main-content {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          min-width: 0;
-          height: 100vh;
-          overflow: hidden;
-        }
-        .content-area {
-          flex: 1;
-          padding: 12px 16px;
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-        }
-        .page-title {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 10px;
-          flex-shrink: 0;
-        }
-        .page-title svg {
-          width: 22px;
-          height: 22px;
-          fill: #c9a227;
-        }
-        .page-title h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: 18px;
-          font-weight: 700;
-          color: #1a1a1a;
-          margin: 0;
-        }
-        .form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 14px;
-          flex: 1;
-          min-height: 0;
-          overflow: hidden;
-        }
-        .form-section {
-          background: white;
-          border-radius: 10px;
-          padding: 14px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-          overflow-y: auto;
-          display: flex;
-          flex-direction: column;
-        }
-        .section-title {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 13px;
-          font-weight: 700;
-          color: #c9a227;
-          margin-bottom: 10px;
-          flex-shrink: 0;
-        }
-        .section-title svg {
-          width: 18px;
-          height: 18px;
-          fill: #c9a227;
-        }
-        .form-row {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 10px;
-          margin-bottom: 10px;
-        }
-        .form-group {
-          margin-bottom: 8px;
-        }
-        .form-group label {
-          display: block;
-          font-size: 11px;
-          font-weight: 600;
-          color: #374151;
-          margin-bottom: 3px;
-        }
-        .form-group input,
-        .form-group textarea {
-          width: 100%;
-          padding: 7px 10px;
-          font-size: 12px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          outline: none;
-          transition: border-color 0.2s;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-          border-color: #c9a227;
-        }
-        .form-group textarea {
-          resize: vertical;
-          min-height: 40px;
-        }
-        .items-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 8px;
-          flex: 1;
-        }
-        .items-table th {
-          background: #f5f3ee;
-          padding: 6px 8px;
-          text-align: left;
-          font-size: 10px;
-          font-weight: 600;
-          color: #6b7280;
-          text-transform: uppercase;
-        }
-        .items-table td {
-          padding: 4px;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        .items-table input {
-          width: 100%;
-          padding: 5px 8px;
-          font-size: 11px;
-          border: 1px solid #d1d5db;
-          border-radius: 5px;
-          outline: none;
-        }
-        .items-table input:focus {
-          border-color: #c9a227;
-        }
-        .amount-input {
-          width: 80px !important;
-        }
-        .quantity-input {
-          width: 50px !important;
-        }
-        .remove-btn {
-          width: 24px;
-          height: 24px;
-          border-radius: 5px;
-          border: none;
-          background: #fee2e2;
-          color: #dc2626;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: background 0.2s;
-          flex-shrink: 0;
-        }
-        .remove-btn:hover {
-          background: #fecaca;
-        }
-        .add-item-btn {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          padding: 6px 12px;
-          background: #f5f3ee;
-          border: 1px dashed #c9a227;
-          border-radius: 6px;
-          color: #c9a227;
-          font-size: 11px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-          flex-shrink: 0;
-          align-self: flex-start;
-        }
-        .add-item-btn:hover {
-          background: #c9a227;
-          color: white;
-        }
-        .total-row {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 12px;
-          margin-top: 8px;
-          padding-top: 8px;
-          border-top: 2px solid #c9a227;
-          flex-shrink: 0;
-        }
-        .total-label {
-          font-size: 13px;
-          font-weight: 700;
-          color: #374151;
-        }
-        .total-value {
-          font-size: 18px;
-          font-weight: 700;
-          color: #c9a227;
-        }
-        .actions-bar {
-          display: flex;
-          gap: 8px;
-          margin-top: 10px;
-          flex-shrink: 0;
-        }
-        .btn {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          padding: 8px 16px;
-          border-radius: 6px;
-          font-size: 12px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-          border: none;
-          white-space: nowrap;
-        }
-        .btn svg {
-          width: 14px;
-          height: 14px;
-        }
-        .btn-primary {
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          color: white;
-        }
-        .btn-primary:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 3px 10px rgba(201, 162, 39, 0.3);
-        }
-        .btn-primary:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-          transform: none;
-        }
-        .btn-secondary {
-          background: white;
-          color: #374151;
-          border: 1px solid #d1d5db;
-        }
-        .btn-secondary:hover {
-          background: #f5f3ee;
-        }
-        .btn-outline {
-          background: white;
-          color: #c9a227;
-          border: 1px solid #c9a227;
-        }
-        .btn-outline:hover {
-          background: #c9a227;
-          color: white;
-        }
-        .message {
-          padding: 8px 12px;
-          border-radius: 6px;
-          margin-bottom: 10px;
-          font-size: 12px;
-          flex-shrink: 0;
-        }
-        .message.success {
-          background: #dcfce7;
-          color: #16a34a;
-          border: 1px solid #bbf7d0;
-        }
-        .message.error {
-          background: #fee2e2;
-          color: #dc2626;
-          border: 1px solid #fecaca;
-        }
-        .preview-section {
-          position: sticky;
-          top: 0;
-          overflow-y: auto;
-        }
-        .preview-title {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 12px;
-          font-weight: 600;
-          color: #6b7280;
-          margin-bottom: 10px;
-          flex-shrink: 0;
-        }
-        .preview-title svg {
-          width: 14px;
-          height: 14px;
-          fill: #c9a227;
-        }
-
-        @media (max-width: 1024px) {
-          .form-grid {
-            grid-template-columns: 1fr;
-            overflow: auto;
-          }
-          .form-section {
-            overflow: visible;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .content-area {
-            padding: 8px 10px;
-          }
-          .form-row {
-            grid-template-columns: 1fr;
-            gap: 6px;
-          }
-          .actions-bar {
-            flex-wrap: wrap;
-          }
-          .btn {
-            flex: 1;
-            justify-content: center;
-            min-width: 80px;
-          }
-        }
-
-        @media print {
-          .no-print { display: none !important; }
-          .form-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
+    <div className="flex h-screen bg-[#f5f3ee] overflow-hidden font-sans">
       <Sidebar />
       
-      <div className="main-content">
-        <Header title="Nueva Factura" />
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        <Header title="Nuevo Recibo" />
         
-        <div className="content-area">
-          <div className="page-title">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="#c9a227" strokeWidth="2"/>
-              <line x1="12" y1="18" x2="12" y2="12" stroke="#c9a227" strokeWidth="2"/>
-              <line x1="9" y1="15" x2="15" y2="15" stroke="#c9a227" strokeWidth="2"/>
-            </svg>
-            <h2>Generar Nueva Factura</h2>
-          </div>
-
+        <div className="flex-1 p-4 md:p-6 overflow-hidden flex flex-col">
+          
+          {/* Status Message popup */}
           {message.text && (
-            <div className={`message ${message.type}`}>{message.text}</div>
+            <div className={`px-4 py-3 rounded-xl mb-4 text-xs font-semibold shadow-sm border ${
+              message.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
+            }`}>
+              {message.text}
+            </div>
           )}
 
-          <div className="form-grid">
-            <div className="form-section">
-              <div className="section-title">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" strokeWidth="2"/>
-                  <line x1="12" y1="18" x2="12" y2="12" stroke="currentColor" strokeWidth="2"/>
-                  <line x1="9" y1="15" x2="15" y2="15" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                Complete el formulario para crear la factura
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>No. Factura</label>
-                  <input type="text" value={invoiceNumber} readOnly style={{ background: '#f5f3ee' }} />
+          {/* Form and Preview Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 flex-1 min-h-0 overflow-hidden">
+            
+            {/* Form Column */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm overflow-y-auto flex flex-col justify-between">
+              <div>
+                {/* Form Header */}
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className="w-5.5 h-5.5 stroke-[#c9a227] fill-none" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="12" y1="18" x2="12" y2="12" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                  </svg>
+                  <h2 className="font-playfair text-lg font-bold text-gray-900 tracking-wide">
+                    Generar Nuevo Recibo
+                  </h2>
                 </div>
-                <div className="form-group">
-                  <label>Fecha</label>
-                  <input type="text" value={new Date().toLocaleDateString('es-GT')} readOnly style={{ background: '#f5f3ee' }} />
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-5">
+                  Complete el formulario para crear el recibo
+                </p>
+
+                {/* Meta Inputs (No, Date, Order) */}
+                <div className="grid grid-cols-3 gap-4 mb-5">
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                      Número de Recibo
+                    </label>
+                    <div className="relative flex items-center">
+                      <svg className="absolute left-3 w-4 h-4 text-gray-400 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      </svg>
+                      <input
+                        type="text"
+                        value={invoiceNumber}
+                        readOnly
+                        className="pl-9 pr-3 py-2 bg-gray-50 text-gray-400 font-bold border border-gray-200 rounded-lg text-xs w-full outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                      Fecha
+                    </label>
+                    <div className="relative flex items-center">
+                      <svg className="absolute left-3 w-4 h-4 text-gray-400 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                      <input
+                        type="text"
+                        value={new Date().toLocaleDateString('es-GT')}
+                        readOnly
+                        className="pl-9 pr-3 py-2 bg-gray-50 text-gray-400 font-bold border border-gray-200 rounded-lg text-xs w-full outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                      No. de Orden del Cliente
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="absolute left-3 text-xs font-bold text-gray-400">#</span>
+                      <input
+                        type="text"
+                        placeholder="ORD-000000"
+                        value={formData.orderNumber}
+                        onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
+                        className="pl-7 pr-3 py-2 bg-white text-gray-800 font-semibold border border-gray-200 rounded-lg text-xs w-full outline-none focus:border-[#c9a227] transition-all"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>No. Orden</label>
-                  <input
-                    type="text"
-                    placeholder="ORD-000000"
-                    value={formData.orderNumber}
-                    onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
-                  />
+
+                {/* Sold to Grid */}
+                <span className="block text-[10px] font-bold text-[#c9a227] uppercase tracking-widest mb-3.5 border-b border-gray-100 pb-1">
+                  Sold to:
+                </span>
+                
+                <div className="grid grid-cols-[120px_1fr] items-center gap-x-4 gap-y-3 mb-5">
+                  <span className="text-xs font-bold text-gray-600">Nombre del Cliente</span>
+                  <div className="relative flex items-center">
+                    <svg className="absolute left-3 w-4 h-4 text-gray-400 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Ingrese el nombre del cliente"
+                      value={formData.clientName}
+                      onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
+                      className="pl-9 pr-3 py-2 w-full text-xs font-medium text-gray-800 border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all placeholder-gray-400"
+                    />
+                  </div>
+
+                  <span className="text-xs font-bold text-gray-600">Street Address</span>
+                  <div className="relative flex items-center">
+                    <svg className="absolute left-3 w-4 h-4 text-gray-400 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Ingrese la dirección"
+                      value={formData.clientAddress}
+                      onChange={(e) => setFormData({ ...formData, clientAddress: e.target.value })}
+                      className="pl-9 pr-3 py-2 w-full text-xs font-medium text-gray-800 border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all placeholder-gray-400"
+                    />
+                  </div>
+
+                  <span className="text-xs font-bold text-gray-600">City, State, ZIP</span>
+                  <div className="relative flex items-center">
+                    <svg className="absolute left-3 w-4 h-4 text-gray-400 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Ingrese ciudad, estado y código postal"
+                      value={formData.clientCity}
+                      onChange={(e) => setFormData({ ...formData, clientCity: e.target.value })}
+                      className="pl-9 pr-3 py-2 w-full text-xs font-medium text-gray-800 border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all placeholder-gray-400"
+                    />
+                  </div>
+
+                  <span className="text-xs font-bold text-gray-600">Phone</span>
+                  <div className="relative flex items-center">
+                    <svg className="absolute left-3 w-4 h-4 text-gray-400 fill-current" viewBox="0 0 24 24">
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Ingrese número de teléfono"
+                      value={formData.clientPhone}
+                      onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
+                      className="pl-9 pr-3 py-2 w-full text-xs font-medium text-gray-800 border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all placeholder-gray-400"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label>Nombre del Cliente</label>
-                <input
-                  type="text"
-                  placeholder="Ingrese el nombre del cliente"
-                  value={formData.clientName}
-                  onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-                />
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Dirección</label>
-                  <input
-                    type="text"
-                    placeholder="Dirección"
-                    value={formData.clientAddress}
-                    onChange={(e) => setFormData({ ...formData, clientAddress: e.target.value })}
-                  />
+                {/* Items Detail Section */}
+                <span className="block text-[10px] font-bold text-[#c9a227] uppercase tracking-widest mb-3.5 border-b border-gray-100 pb-1">
+                  Detalle del Recibo
+                </span>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse mb-2">
+                    <thead>
+                      <tr className="border-b border-gray-100 bg-[#fbfbfa]">
+                        <th className="text-left py-2 px-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider rounded-l-lg">Descripción</th>
+                        <th className="text-center py-2 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider w-14">Cant.</th>
+                        <th className="text-right py-2 px-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider w-24">Monto</th>
+                        <th className="w-8"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {items.map((item, index) => (
+                        <tr key={index}>
+                          <td className="py-2.5 px-1">
+                            <input
+                              type="text"
+                              placeholder="Descripción del producto o servicio"
+                              value={item.description}
+                              onChange={(e) => handleItemChange(index, 'description', e.target.value)}
+                              className="w-full px-2.5 py-1.5 text-xs font-medium border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all"
+                            />
+                          </td>
+                          <td className="py-2.5 px-1">
+                            <input
+                              type="number"
+                              value={item.quantity}
+                              onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 1)}
+                              min="1"
+                              className="w-full text-center px-1.5 py-1.5 text-xs font-bold border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all"
+                            />
+                          </td>
+                          <td className="py-2.5 px-1">
+                            <input
+                              type="number"
+                              placeholder="Q0.00"
+                              value={item.amount || ''}
+                              onChange={(e) => handleItemChange(index, 'amount', parseFloat(e.target.value) || 0)}
+                              step="0.01"
+                              className="w-full text-right px-2.5 py-1.5 text-xs font-bold border border-gray-200 rounded-lg outline-none focus:border-[#c9a227] transition-all"
+                            />
+                          </td>
+                          <td className="py-2.5 px-2">
+                            <button
+                              onClick={() => removeItem(index)}
+                              className="w-7 h-7 bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center rounded-lg transition-colors border border-transparent hover:border-red-200"
+                              title="Eliminar ítem"
+                            >
+                              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-                <div className="form-group">
-                  <label>Ciudad, Estado, ZIP</label>
-                  <input
-                    type="text"
-                    placeholder="Ciudad, estado, ZIP"
-                    value={formData.clientCity}
-                    onChange={(e) => setFormData({ ...formData, clientCity: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Teléfono</label>
-                  <input
-                    type="text"
-                    placeholder="Teléfono"
-                    value={formData.clientPhone}
-                    onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-                  />
-                </div>
-              </div>
 
-              <div className="section-title" style={{ marginTop: '4px' }}>
-                Detalle de la Factura
-              </div>
-
-              <table className="items-table">
-                <thead>
-                  <tr>
-                    <th>Descripción</th>
-                    <th>Cant.</th>
-                    <th>Monto</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          type="text"
-                          placeholder="Descripción del producto o servicio"
-                          value={item.description}
-                          onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          className="quantity-input"
-                          value={item.quantity}
-                          onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 1)}
-                          min="1"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          className="amount-input"
-                          placeholder="Q0.00"
-                          value={item.amount || ''}
-                          onChange={(e) => handleItemChange(index, 'amount', parseFloat(e.target.value) || 0)}
-                          step="0.01"
-                        />
-                      </td>
-                      <td>
-                        <button className="remove-btn" onClick={() => removeItem(index)}>
-                          <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
-                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                          </svg>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <button className="add-item-btn" onClick={addItem}>
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
-                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                </svg>
-                Agregar Item
-              </button>
-
-              <div className="total-row">
-                <span className="total-label">Total:</span>
-                <span className="total-value">Q{calculateTotal().toFixed(2)}</span>
-              </div>
-
-              <div className="actions-bar">
-                <button className="btn btn-secondary" onClick={() => {
-                  setFormData({ clientName: '', clientAddress: '', clientCity: '', clientPhone: '', orderNumber: '', notes: '' })
-                  setItems([{ description: '', amount: 0, quantity: 1 }])
-                }}>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                  Limpiar
+                <button
+                  onClick={addItem}
+                  className="flex items-center gap-1.5 px-4 py-2 border border-dashed border-[#c9a227]/40 text-[#c9a227] hover:border-[#c9a227] hover:bg-amber-50/30 rounded-xl font-bold text-xs transition-all duration-200 mt-2"
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 stroke-current fill-none" strokeWidth="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Agregar Ítem
                 </button>
-                <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
-                  {saving ? 'Guardando...' : 'Guardar'}
-                </button>
-                <button className="btn btn-outline" onClick={handlePrint}>
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-                  Imprimir
-                </button>
+              </div>
+
+              {/* Total and Submit Actions */}
+              <div className="mt-8 border-t border-gray-100 pt-4">
+                <div className="flex justify-end items-center gap-3 mb-4">
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Total:</span>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl px-5 py-2 font-bold text-gray-900 text-sm min-w-[130px] text-right shadow-inner">
+                    Q{calculateTotal().toFixed(2)}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setFormData({ clientName: '', clientAddress: '', clientCity: '', clientPhone: '', orderNumber: '', notes: '' })
+                      setItems([{ description: '', amount: 0, quantity: 1 }])
+                    }}
+                    className="flex-1 py-3 border border-gray-200 rounded-xl font-bold text-xs text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors uppercase tracking-wider flex items-center justify-center gap-2"
+                  >
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                    Limpiar
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="flex-1 py-3 bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] rounded-xl font-bold text-xs hover:shadow-md active:translate-y-0 hover:-translate-y-0.5 transition-all duration-200 uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                      <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" />
+                    </svg>
+                    {saving ? 'Guardando...' : 'Guardar'}
+                  </button>
+                  <button
+                    onClick={handlePrint}
+                    className="flex-1 py-3 bg-amber-50 border border-[#c9a227]/40 text-[#c9a227] rounded-xl font-bold text-xs hover:bg-[#c9a227] hover:text-white transition-all duration-200 uppercase tracking-wider flex items-center justify-center gap-2"
+                  >
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                      <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
+                    </svg>
+                    Imprimir
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div className="form-section preview-section">
-              <div className="preview-title">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            
+            {/* Preview Column */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm overflow-y-auto flex flex-col">
+              <div className="flex items-center gap-1.5 text-xs text-gray-400 font-bold uppercase tracking-wider mb-4 border-b border-gray-50 pb-2">
+                <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 fill-current">
                   <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
                 </svg>
-                Vista previa de la factura
+                Vista previa del recibo
               </div>
-              <InvoicePreview data={previewData} />
+              <div className="flex-1">
+                <InvoicePreview data={previewData} />
+              </div>
             </div>
+
           </div>
         </div>
       </div>

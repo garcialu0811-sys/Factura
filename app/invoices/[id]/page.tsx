@@ -203,10 +203,10 @@ export default function InvoiceDetailPage() {
   }
 
   const getStatusBadge = (status: string) => {
-    const styles: Record<string, React.CSSProperties> = {
-      paid: { background: '#dcfce7', color: '#16a34a' },
-      pending: { background: '#fef3c7', color: '#d97706' },
-      cancelled: { background: '#fee2e2', color: '#dc2626' },
+    const styles: Record<string, string> = {
+      paid: 'bg-green-50 text-green-600 border border-green-200/50',
+      pending: 'bg-amber-50 text-amber-600 border border-amber-200/50',
+      cancelled: 'bg-red-50 text-red-600 border border-red-200/50',
     }
     const labels: Record<string, string> = {
       paid: 'Pagado',
@@ -214,13 +214,7 @@ export default function InvoiceDetailPage() {
       cancelled: 'Cancelado',
     }
     return (
-      <span style={{
-        ...styles[status],
-        padding: '6px 16px',
-        borderRadius: '20px',
-        fontSize: '13px',
-        fontWeight: 600,
-      }}>
+      <span className={`px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase ${styles[status]}`}>
         {labels[status]}
       </span>
     )
@@ -228,10 +222,10 @@ export default function InvoiceDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-cream-50">
+      <div className="flex h-screen bg-[#f5f3ee] overflow-hidden font-sans">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center">
-          <p>Cargando factura...</p>
+        <div className="flex-1 flex items-center justify-center text-xs font-bold text-gray-400">
+          <p>Cargando recibo...</p>
         </div>
       </div>
     )
@@ -252,366 +246,177 @@ export default function InvoiceDetailPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-cream-50">
-      <style jsx>{`
-        .main-content {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
-        .content-area {
-          flex: 1;
-          padding: 24px;
-        }
-        .page-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 24px;
-        }
-        .page-header-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-        .page-header-left svg {
-          width: 28px;
-          height: 28px;
-          fill: #c9a227;
-        }
-        .page-header-left h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: 24px;
-          font-weight: 700;
-          color: #1a1a1a;
-        }
-        .actions-bar {
-          display: flex;
-          gap: 12px;
-        }
-        .btn {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 20px;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-          border: none;
-          text-decoration: none;
-        }
-        .btn svg {
-          width: 18px;
-          height: 18px;
-        }
-        .btn-primary {
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          color: white;
-        }
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
-        }
-        .btn-secondary {
-          background: white;
-          color: #374151;
-          border: 1px solid #d1d5db;
-        }
-        .btn-secondary:hover {
-          background: #f5f3ee;
-        }
-        .btn-outline {
-          background: white;
-          color: #c9a227;
-          border: 2px solid #c9a227;
-        }
-        .btn-outline:hover {
-          background: #c9a227;
-          color: white;
-        }
-        .btn-danger {
-          background: white;
-          color: #dc2626;
-          border: 1px solid #dc2626;
-        }
-        .btn-danger:hover {
-          background: #dc2626;
-          color: white;
-        }
-        .detail-grid {
-          display: grid;
-          grid-template-columns: 1fr 350px;
-          gap: 24px;
-        }
-        .detail-card {
-          background: white;
-          border-radius: 12px;
-          padding: 24px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .status-section {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          margin-bottom: 24px;
-          padding-bottom: 20px;
-          border-bottom: 1px solid #e5e7eb;
-        }
-        .status-label {
-          font-size: 14px;
-          color: #6b7280;
-        }
-        .status-buttons {
-          display: flex;
-          gap: 8px;
-        }
-        .status-btn {
-          padding: 6px 12px;
-          border-radius: 6px;
-          font-size: 12px;
-          font-weight: 600;
-          cursor: pointer;
-          border: none;
-          transition: all 0.2s;
-        }
-        .status-btn.paid {
-          background: #dcfce7;
-          color: #16a34a;
-        }
-        .status-btn.paid:hover {
-          background: #16a34a;
-          color: white;
-        }
-        .status-btn.pending {
-          background: #fef3c7;
-          color: #d97706;
-        }
-        .status-btn.pending:hover {
-          background: #d97706;
-          color: white;
-        }
-        .status-btn.cancelled {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-        .status-btn.cancelled:hover {
-          background: #dc2626;
-          color: white;
-        }
-        .info-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 16px;
-        }
-        .info-item {
-          padding: 12px;
-          background: #f5f3ee;
-          border-radius: 8px;
-        }
-        .info-item .label {
-          font-size: 12px;
-          color: #6b7280;
-          margin-bottom: 4px;
-        }
-        .info-item .value {
-          font-size: 14px;
-          font-weight: 600;
-          color: #1a1a1a;
-        }
-        .items-list {
-          margin-top: 24px;
-        }
-        .items-list h3 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #374151;
-          margin-bottom: 12px;
-        }
-        .item-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 12px;
-          background: #f5f3ee;
-          border-radius: 8px;
-          margin-bottom: 8px;
-        }
-        .item-row .description {
-          font-size: 14px;
-          color: #1a1a1a;
-        }
-        .item-row .amount {
-          font-size: 14px;
-          font-weight: 600;
-          color: #c9a227;
-        }
-        .total-box {
-          margin-top: 24px;
-          padding: 16px;
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          border-radius: 8px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        .total-box .label {
-          font-size: 16px;
-          font-weight: 600;
-          color: white;
-        }
-        .total-box .value {
-          font-size: 24px;
-          font-weight: 700;
-          color: white;
-        }
-        .message {
-          padding: 12px 16px;
-          border-radius: 8px;
-          margin-bottom: 16px;
-          font-size: 14px;
-        }
-        .message.success {
-          background: #dcfce7;
-          color: #16a34a;
-          border: 1px solid #bbf7d0;
-        }
-        .message.error {
-          background: #fee2e2;
-          color: #dc2626;
-          border: 1px solid #fecaca;
-        }
-        .preview-sidebar {
-          position: sticky;
-          top: 24px;
-        }
-        @media print {
-          .no-print {
-            display: none !important;
-          }
-          .detail-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
-
+    <div className="flex h-screen bg-[#f5f3ee] overflow-hidden font-sans">
       <Sidebar />
       
-      <div className="main-content">
-        <Header title={`Factura ${invoice.invoiceNumber}`} />
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        <Header title={`Recibo ${invoice.invoiceNumber}`} />
         
-        <div className="content-area">
+        <div className="flex-1 p-6 overflow-y-auto">
+          {/* Status Alert popup */}
           {message.text && (
-            <div className={`message ${message.type}`}>{message.text}</div>
+            <div className={`px-4 py-3 rounded-xl mb-4 text-xs font-semibold shadow-sm border ${
+              message.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
+            }`}>
+              {message.text}
+            </div>
           )}
 
-          <div className="page-header no-print">
-            <div className="page-header-left">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="#c9a227" strokeWidth="2"/>
-                <polyline points="14 2 14 8 20 8" fill="none" stroke="#c9a227" strokeWidth="2"/>
+          {/* Page Toolbar (No-Print) */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 no-print">
+            <div className="flex items-center gap-2">
+              <svg viewBox="0 0 24 24" className="w-6 h-6 stroke-[#c9a227] fill-none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
               </svg>
-              <h2>Detalle de Factura</h2>
+              <h2 className="font-playfair text-xl font-bold text-gray-900 tracking-wide">
+                Detalle del Recibo
+              </h2>
             </div>
-            <div className="actions-bar">
-              <button className="btn btn-secondary" onClick={() => router.back()}>
+            
+            <div className="flex flex-wrap gap-2.5">
+              <button
+                onClick={() => router.back()}
+                className="py-2 px-4 border border-gray-200 rounded-xl font-bold text-xs text-gray-500 hover:bg-gray-50 transition-colors uppercase tracking-wider flex items-center gap-1.5"
+              >
                 ← Volver
               </button>
-              <button className="btn btn-outline" onClick={handlePrint}>
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+              <button
+                onClick={handlePrint}
+                className="py-2 px-4 bg-amber-50 border border-[#c9a227]/40 text-[#c9a227] rounded-xl font-bold text-xs hover:bg-[#c9a227] hover:text-white transition-all uppercase tracking-wider flex items-center gap-1.5"
+              >
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" />
+                </svg>
                 Imprimir
               </button>
-              <button className="btn btn-primary" onClick={handleDownload}>
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              <button
+                onClick={handleDownload}
+                className="py-2 px-4 bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] rounded-xl font-bold text-xs hover:shadow-md transition-all uppercase tracking-wider flex items-center gap-1.5"
+              >
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                </svg>
                 Descargar PDF
               </button>
-              <button className="btn btn-danger" onClick={deleteInvoice}>
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+              <button
+                onClick={deleteInvoice}
+                className="py-2 px-4 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-1.5"
+              >
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                </svg>
                 Eliminar
               </button>
             </div>
           </div>
 
-          <div className="detail-grid">
-            <div className="detail-card">
-              <div className="status-section no-print">
-                <span className="status-label">Estado:</span>
-                {getStatusBadge(invoice.status)}
-                <div className="status-buttons">
+          {/* Detail Grid layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
+            
+            {/* Details Card */}
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col gap-5">
+              
+              {/* Status Section */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-gray-100 pb-4 no-print">
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Estado</span>
+                  {getStatusBadge(invoice.status)}
+                </div>
+                <div className="flex gap-2">
                   <button
-                    className="status-btn paid"
                     onClick={() => updateStatus('paid')}
                     disabled={updating || invoice.status === 'paid'}
+                    className="px-3 py-1.5 bg-green-50 text-green-600 border border-green-150 hover:bg-green-100 disabled:opacity-50 disabled:pointer-events-none rounded-lg text-[10px] font-bold tracking-wider uppercase transition-colors"
                   >
                     Marcar Pagado
                   </button>
                   <button
-                    className="status-btn pending"
                     onClick={() => updateStatus('pending')}
                     disabled={updating || invoice.status === 'pending'}
+                    className="px-3 py-1.5 bg-amber-50 text-amber-600 border border-amber-150 hover:bg-amber-100 disabled:opacity-50 disabled:pointer-events-none rounded-lg text-[10px] font-bold tracking-wider uppercase transition-colors"
                   >
                     Marcar Pendiente
                   </button>
                   <button
-                    className="status-btn cancelled"
                     onClick={() => updateStatus('cancelled')}
                     disabled={updating || invoice.status === 'cancelled'}
+                    className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-150 hover:bg-red-100 disabled:opacity-50 disabled:pointer-events-none rounded-lg text-[10px] font-bold tracking-wider uppercase transition-colors"
                   >
                     Cancelar
                   </button>
                 </div>
               </div>
 
-              <div className="info-grid">
-                <div className="info-item">
-                  <div className="label">No. Factura</div>
-                  <div className="value">{invoice.invoiceNumber}</div>
+              {/* Info fields layout */}
+              <span className="block text-[10px] font-bold text-[#c9a227] uppercase tracking-widest border-b border-gray-50 pb-1.5">
+                Información del Recibo
+              </span>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">No. Recibo</div>
+                  <div className="text-xs font-bold text-gray-800">{invoice.invoiceNumber}</div>
                 </div>
-                <div className="info-item">
-                  <div className="label">Fecha</div>
-                  <div className="value">{new Date(invoice.date).toLocaleDateString('es-GT')}</div>
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Fecha</div>
+                  <div className="text-xs font-bold text-gray-800">
+                    {new Date(invoice.date).toLocaleDateString('es-GT')}
+                  </div>
                 </div>
-                <div className="info-item">
-                  <div className="label">Cliente</div>
-                  <div className="value">{invoice.clientName}</div>
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Cliente</div>
+                  <div className="text-xs font-bold text-gray-800">{invoice.clientName}</div>
                 </div>
-                <div className="info-item">
-                  <div className="label">No. Orden</div>
-                  <div className="value">{invoice.orderNumber || '—'}</div>
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">No. Orden</div>
+                  <div className="text-xs font-bold text-gray-800">{invoice.orderNumber || '—'}</div>
                 </div>
-                <div className="info-item">
-                  <div className="label">Dirección</div>
-                  <div className="value">{invoice.clientAddress || '—'}</div>
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Dirección</div>
+                  <div className="text-xs font-bold text-gray-800">{invoice.clientAddress || '—'}</div>
                 </div>
-                <div className="info-item">
-                  <div className="label">Ciudad</div>
-                  <div className="value">{invoice.clientCity || '—'}</div>
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Ciudad</div>
+                  <div className="text-xs font-bold text-gray-800">{invoice.clientCity || '—'}</div>
                 </div>
-                <div className="info-item">
-                  <div className="label">Teléfono</div>
-                  <div className="value">{invoice.clientPhone || '—'}</div>
+                <div className="p-3 bg-gray-50/60 border border-gray-100 rounded-xl col-span-2">
+                  <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Teléfono</div>
+                  <div className="text-xs font-bold text-gray-800">{invoice.clientPhone || '—'}</div>
                 </div>
               </div>
 
-              <div className="items-list">
-                <h3>Items de la Factura</h3>
+              {/* Items Detail List */}
+              <span className="block text-[10px] font-bold text-[#c9a227] uppercase tracking-widest border-b border-gray-50 pb-1.5 mt-2">
+                Conceptos del Recibo
+              </span>
+              
+              <div className="flex flex-col gap-2">
                 {invoice.items.map((item: any) => (
-                  <div className="item-row" key={item.id}>
-                    <span className="description">{item.description}</span>
-                    <span className="amount">Q{item.amount.toFixed(2)}</span>
+                  <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50/60 border border-gray-100 rounded-xl">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-gray-800">{item.description}</span>
+                      <span className="text-[10px] text-gray-400 font-medium">Cantidad: {item.quantity || 1}</span>
+                    </div>
+                    <span className="text-xs font-extrabold text-[#c9a227]">
+                      Q{(item.amount * (item.quantity || 1)).toFixed(2)}
+                    </span>
                   </div>
                 ))}
               </div>
 
-              <div className="total-box">
-                <span className="label">TOTAL:</span>
-                <span className="value">Q{invoice.total.toFixed(2)}</span>
+              {/* Total Box */}
+              <div className="mt-4 p-4 bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] rounded-xl flex justify-between items-center shadow-sm">
+                <span className="text-xs font-extrabold uppercase tracking-widest">TOTAL</span>
+                <span className="text-xl font-black">Q{invoice.total.toFixed(2)}</span>
               </div>
             </div>
 
-            <div className="preview-sidebar">
+            {/* Preview Sidebar */}
+            <div className="sticky top-6">
               <InvoicePreview data={previewData} />
             </div>
+
           </div>
         </div>
       </div>

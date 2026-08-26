@@ -25,328 +25,193 @@ export default function InvoicePreview({ data }: { data: InvoiceData }) {
   }
 
   return (
-    <div className="invoice-preview">
-      <style jsx>{`
-        .invoice-preview {
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-          padding: 16px;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          font-size: 11px;
-        }
-        .preview-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 12px;
-          padding-bottom: 10px;
-          border-bottom: 2px solid #c9a227;
-        }
-        .company-info {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-        .company-logo {
-          max-width: 180px;
-        }
-        .invoice-logo {
-          width: 100%;
-          height: auto;
-          mix-blend-mode: multiply;
-          image-rendering: -webkit-optimize-contrast;
-          image-rendering: crisp-edges;
-        }
-        .company-contact {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          margin-top: 6px;
-          font-size: 9px;
-          color: #6b7280;
-        }
-        .company-contact span {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-        .invoice-badge {
-          text-align: right;
-          flex-shrink: 0;
-        }
-        .invoice-badge .badge {
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          color: white;
-          padding: 4px 12px;
-          border-radius: 4px;
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          display: inline-block;
-          margin-bottom: 4px;
-        }
-        .invoice-badge .invoice-number {
-          font-size: 13px;
-          font-weight: 700;
-          color: #c9a227;
-          display: block;
-        }
-        .meta-row {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 10px;
-          font-size: 10px;
-        }
-        .meta-item label {
-          color: #6b7280;
-          margin-right: 4px;
-        }
-        .meta-item span {
-          font-weight: 600;
-          color: #1a1a1a;
-        }
-        .client-section {
-          background: #f5f3ee;
-          border-radius: 6px;
-          padding: 8px;
-          margin-bottom: 10px;
-        }
-        .client-section h3 {
-          background: #c9a227;
-          color: white;
-          padding: 4px 10px;
-          border-radius: 4px;
-          font-size: 9px;
-          font-weight: 600;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          display: inline-block;
-          margin-bottom: 6px;
-        }
-        .client-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 4px;
-        }
-        .client-field {
-          display: flex;
-          gap: 4px;
-          font-size: 10px;
-        }
-        .client-field .label {
-          color: #6b7280;
-          min-width: 80px;
-        }
-        .client-field .value {
-          font-weight: 600;
-          color: #1a1a1a;
-        }
-        .items-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 10px;
-        }
-        .items-table thead th {
-          background: linear-gradient(135deg, #c9a227 0%, #d4af37 100%);
-          color: white;
-          padding: 6px 8px;
-          text-align: left;
-          font-size: 9px;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-          text-transform: uppercase;
-        }
-        .items-table thead th:last-child {
-          text-align: right;
-        }
-        .items-table tbody td {
-          padding: 6px 8px;
-          border-bottom: 1px solid #e5e7eb;
-          font-size: 10px;
-        }
-        .items-table tbody td:last-child {
-          text-align: right;
-          font-weight: 600;
-        }
-        .items-table tbody tr:nth-child(even) {
-          background: #f5f3ee;
-        }
-        .total-section {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 8px;
-        }
-        .total-box {
-          background: #f5f3ee;
-          border: 2px solid #c9a227;
-          border-radius: 6px;
-          padding: 8px 14px;
-          text-align: right;
-        }
-        .total-label {
-          font-size: 10px;
-          color: #6b7280;
-          margin-bottom: 2px;
-        }
-        .total-amount {
-          font-size: 18px;
-          font-weight: 700;
-          color: #c9a227;
-        }
-        .thank-you {
-          text-align: center;
-          margin-top: 10px;
-          padding-top: 8px;
-          border-top: 1px solid #e5e7eb;
-        }
-        .thank-you p {
-          font-family: 'Great Vibes', cursive;
-          font-size: 16px;
-          color: #c9a227;
-        }
-        .signatures {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          margin-top: 12px;
-          padding-top: 8px;
-        }
-        .signature-box {
-          text-align: center;
-          width: 120px;
-        }
-        .signature-line {
-          border-top: 1px solid #1a1a1a;
-          margin-top: 30px;
-          padding-top: 4px;
-        }
-        .signature-box .name {
-          font-size: 11px;
-          font-weight: 600;
-          color: #1a1a1a;
-        }
-        .signature-box .role {
-          font-size: 8px;
-          color: #6b7280;
-        }
-        .seal {
-          width: 50px;
-          height: 50px;
-        }
-      `}</style>
-
-      <div className="preview-header">
-        <div className="company-info">
-          <div className="company-logo">
-            <img src="/logo-login.png" alt="LG Art Sculptor Studio" className="invoice-logo" />
-          </div>
-          <div className="company-contact">
-            <span>📍 4ta. Calle 12-34, Zona 1, Guatemala</span>
-            <span>📞 +502 1234 5678</span>
-            <span>✉️ info@lgartstudio.com</span>
-          </div>
-        </div>
-        <div className="invoice-badge">
-          <span className="badge">FACTURA</span>
-          <span className="invoice-number">{data.invoiceNumber || 'R-0000000'}</span>
-        </div>
+    <div className="relative bg-white p-5 md:p-6 rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col justify-between overflow-hidden min-h-[720px] font-sans no-print select-none">
+      
+      {/* Gold corner ribbon decorations */}
+      {/* Top-Left */}
+      <div className="absolute top-0 left-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
+        <div className="w-[100px] h-[18px] bg-gradient-to-r from-[#dfba4d] to-[#c1952e] absolute top-[12px] left-[-30px] -rotate-45 border-b border-[#a6872d]/30 shadow-sm"></div>
+        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute top-[34px] left-[-30px] -rotate-45"></div>
+      </div>
+      {/* Top-Right */}
+      <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
+        <div className="w-[100px] h-[18px] bg-gradient-to-l from-[#dfba4d] to-[#c1952e] absolute top-[12px] right-[-30px] rotate-45 border-b border-[#a6872d]/30 shadow-sm"></div>
+        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute top-[34px] right-[-30px] rotate-45"></div>
+      </div>
+      {/* Bottom-Left */}
+      <div className="absolute bottom-0 left-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
+        <div className="w-[100px] h-[18px] bg-gradient-to-r from-[#dfba4d] to-[#c1952e] absolute bottom-[12px] left-[-30px] rotate-45 border-t border-[#a6872d]/30 shadow-sm"></div>
+        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute bottom-[34px] left-[-30px] rotate-45"></div>
+      </div>
+      {/* Bottom-Right */}
+      <div className="absolute bottom-0 right-0 w-16 h-16 overflow-hidden pointer-events-none z-10">
+        <div className="w-[100px] h-[18px] bg-gradient-to-l from-[#dfba4d] to-[#c1952e] absolute bottom-[12px] right-[-30px] -rotate-45 border-t border-[#a6872d]/30 shadow-sm"></div>
+        <div className="w-[100px] h-[3px] bg-[#dfba4d]/40 absolute bottom-[34px] right-[-30px] -rotate-45"></div>
       </div>
 
-      <div className="meta-row">
-        <div className="meta-item">
-          <label>Fecha:</label>
-          <span>{formatDate(data.date)}</span>
-        </div>
-        {data.orderNumber && (
-          <div className="meta-item">
-            <label>No. Orden:</label>
-            <span>{data.orderNumber}</span>
+      {/* Double Gold Line Border Frame */}
+      <div className="border-4 border-double border-[#c9a227]/40 p-4 md:p-5 flex-1 flex flex-col justify-between rounded-xl relative">
+        
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+          <div className="flex-1">
+            <div className="max-w-[170px] w-full">
+              <img
+                src="/logo-login.png"
+                alt="LG Art"
+                className="w-full h-auto mix-blend-multiply image-render-crisp"
+                style={{ imageRendering: '-webkit-optimize-contrast' }}
+              />
+            </div>
+            {/* Company Contact Info */}
+            <div className="text-[9px] text-gray-500 font-medium flex flex-col gap-0.5 mt-2">
+              <span className="flex items-center gap-1">
+                📍 4ta. Calle 12-34, Zona 1, Guatemala
+              </span>
+              <span className="flex items-center gap-1">
+                📞 +502 1234 5678 &nbsp;&nbsp; ✉️ info@lgartstudio.com
+              </span>
+            </div>
           </div>
-        )}
-      </div>
 
-      <div className="client-section">
-        <h3>Recibido De</h3>
-        <div className="client-grid">
-          <div className="client-field">
-            <span className="label">Nombre:</span>
-            <span className="value">{data.clientName || '—'}</span>
-          </div>
-          <div className="client-field">
-            <span className="label">Dirección:</span>
-            <span className="value">{data.clientAddress || '—'}</span>
-          </div>
-          <div className="client-field">
-            <span className="label">Ciudad:</span>
-            <span className="value">{data.clientCity || '—'}</span>
-          </div>
-          <div className="client-field">
-            <span className="label">Teléfono:</span>
-            <span className="value">{data.clientPhone || '—'}</span>
+          {/* Receipt Badge and Details */}
+          <div className="flex flex-col items-end shrink-0">
+            <span className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold px-4 py-1 text-[10px] rounded-md tracking-widest uppercase border border-[#a6872d]/20 mb-1.5 shadow-sm">
+              RECIBO
+            </span>
+            <span className="bg-gray-50 border border-gray-200/60 rounded-lg px-3 py-1 font-bold text-gray-800 text-xs tracking-wider block text-center min-w-[110px]">
+              {data.invoiceNumber || 'R-0000000'}
+            </span>
+            <div className="text-[9px] text-gray-600 mt-2 flex flex-col gap-0.5 items-end font-medium">
+              <div>
+                <span className="text-gray-400 mr-1.5 font-normal">Fecha:</span>
+                <span className="font-semibold text-gray-900">{formatDate(data.date)}</span>
+              </div>
+              {data.orderNumber && (
+                <div>
+                  <span className="text-gray-400 mr-1.5 font-normal">No. de Orden:</span>
+                  <span className="font-semibold text-gray-900">{data.orderNumber}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <table className="items-table">
-        <thead>
-          <tr>
-            <th>Descripción</th>
-            <th>Cant.</th>
-            <th>Monto</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.items.length > 0 ? (
-            data.items.map((item, index) => (
-              <tr key={index}>
-                <td>{item.description || 'Descripción del producto o servicio'}</td>
-                <td>{item.quantity || 1}</td>
-                <td>Q{(item.amount || 0).toFixed(2)}</td>
+        {/* Client Details Section ("RECIBIDO DE") */}
+        <div className="mb-4">
+          <div className="flex justify-center mb-1.5">
+            <span className="bg-[#c9a227] text-white px-6 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider">
+              Recibido De
+            </span>
+          </div>
+          <div className="border border-[#c9a227]/25 rounded-xl bg-[#faf9f5]/30 p-3 text-[10px] text-gray-700 font-medium">
+            <div className="grid grid-cols-[105px_10px_1fr] gap-y-1 leading-relaxed">
+              <span className="text-gray-500 font-semibold">Nombre del Cliente</span>
+              <span className="text-gray-400 text-center">:</span>
+              <span className="font-bold text-gray-900">{data.clientName || '—'}</span>
+
+              <span className="text-gray-500 font-semibold">Dirección</span>
+              <span className="text-gray-400 text-center">:</span>
+              <span className="font-semibold text-gray-800">{data.clientAddress || '—'}</span>
+
+              <span className="text-gray-500 font-semibold">Ciudad, Estado, ZIP</span>
+              <span className="text-gray-400 text-center">:</span>
+              <span className="font-semibold text-gray-800">{data.clientCity || '—'}</span>
+
+              <span className="text-gray-500 font-semibold">Teléfono</span>
+              <span className="text-gray-400 text-center">:</span>
+              <span className="font-semibold text-gray-800">{data.clientPhone || '—'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Items Table */}
+        <div className="flex-1 min-h-[140px] flex flex-col justify-between">
+          <table className="w-full border-collapse text-[10px] mt-1">
+            <thead>
+              <tr className="border-b border-[#c9a227]/40">
+                <th className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold py-1.5 px-3 text-left uppercase tracking-wider rounded-l-md">
+                  Descripción
+                </th>
+                <th className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold py-1.5 px-2 text-center uppercase tracking-wider w-12">
+                  Cant.
+                </th>
+                <th className="bg-gradient-to-r from-[#dfba4d] to-[#c1952e] text-[#4a3505] font-bold py-1.5 px-3 text-right uppercase tracking-wider rounded-r-md w-28">
+                  Monto
+                </th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={3} style={{ textAlign: 'center', color: '#9ca3af' }}>
-                Agrega items a la factura
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      <div className="total-section">
-        <div className="total-box">
-          <div className="total-label">TOTAL:</div>
-          <div className="total-amount">Q{data.total.toFixed(2)}</div>
+            </thead>
+            <tbody className="divide-y divide-dashed divide-gray-200">
+              {data.items.length > 0 ? (
+                data.items.map((item, index) => (
+                  <tr key={index} className="hover:bg-gray-50/40">
+                    <td className="py-2.5 px-3 text-gray-700 font-semibold leading-relaxed">
+                      {item.description || 'Descripción del producto o servicio'}
+                    </td>
+                    <td className="py-2.5 px-2 text-center font-bold text-gray-500">{item.quantity || 1}</td>
+                    <td className="py-2.5 px-3 text-right font-bold text-gray-900">
+                      Q{(item.amount * (item.quantity || 1)).toFixed(2)}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3} className="py-8 text-center text-gray-400 font-medium tracking-wide">
+                    Agrega ítems para visualizar el detalle
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      <div className="thank-you">
-        <p>¡Gracias por su preferencia!</p>
-      </div>
-
-      <div className="signatures">
-        <div className="signature-box">
-          <div className="signature-line">
-            <div className="name">Jose Gomez</div>
-            <div className="role">Firma del Dueño</div>
+        {/* Total Section */}
+        <div className="flex justify-end mt-4">
+          <div className="bg-[#faf8f4] border-2 border-[#dfba4d] rounded-xl px-5 py-2 flex items-center gap-4 min-w-[200px] shadow-sm">
+            <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest">TOTAL</span>
+            <span className="text-lg font-black text-[#c9a227] flex-1 text-right">
+              Q{data.total.toFixed(2)}
+            </span>
           </div>
         </div>
-        <div className="seal">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="#c9a227" strokeWidth="3"/>
-            <circle cx="50" cy="50" r="35" fill="none" stroke="#c9a227" strokeWidth="1"/>
-            <text x="50" y="45" textAnchor="middle" fill="#c9a227" fontSize="12" fontFamily="Great Vibes">LG Art</text>
-            <text x="50" y="60" textAnchor="middle" fill="#c9a227" fontSize="8" fontFamily="Playfair Display">STUDIO</text>
-          </svg>
+
+        {/* Thank You Footer */}
+        <div className="text-center mt-3 pt-2 border-t border-gray-100">
+          <p className="font-vibes text-xl text-[#c9a227] tracking-wider font-semibold">
+            ¡Gracias por su preferencia!
+          </p>
         </div>
-        <div className="signature-box">
-          <div className="signature-line">
-            <div className="name">Cliente</div>
-            <div className="role">Firma del Cliente</div>
+
+        {/* Signatures & Seal */}
+        <div className="flex justify-between items-end mt-3 pt-2">
+          {/* Owner Signature */}
+          <div className="text-center w-28 flex flex-col items-center">
+            <span className="font-vibes text-sm text-gray-400 h-6 select-none">Jose Gomez</span>
+            <div className="w-full border-t border-gray-400 pt-1 flex flex-col">
+              <span className="text-[9.5px] font-bold text-gray-800 leading-tight">Jose Gomez</span>
+              <span className="text-[7.5px] text-gray-400 font-medium">Firma del Dueño</span>
+            </div>
+          </div>
+
+          {/* Central Logo Stamp */}
+          <div className="w-14 h-14 bg-gradient-to-br from-[#dfba4d] to-[#c1952e] rounded-full p-[2px] shadow-md flex items-center justify-center shrink-0">
+            <div className="w-full h-full bg-[#fefdfa] rounded-full border border-dashed border-white/60 flex flex-col items-center justify-center text-[#c9a227] select-none">
+              <span className="font-vibes text-xs leading-none font-bold">LG</span>
+              <span className="font-playfair text-[6.5px] uppercase font-bold tracking-widest mt-0.5">Art</span>
+              <span className="text-[4.5px] uppercase font-bold text-[#c9a227]/70 leading-none">Studio</span>
+            </div>
+          </div>
+
+          {/* Client Signature */}
+          <div className="text-center w-28 flex flex-col items-center">
+            <span className="font-vibes text-sm text-gray-400 h-6 select-none">Cliente</span>
+            <div className="w-full border-t border-gray-400 pt-1 flex flex-col">
+              <span className="text-[9.5px] font-bold text-gray-800 leading-tight">Cliente</span>
+              <span className="text-[7.5px] text-gray-400 font-medium">Firma del Cliente</span>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   )

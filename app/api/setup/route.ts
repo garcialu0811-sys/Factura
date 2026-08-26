@@ -9,7 +9,7 @@ export async function POST() {
     // Create admin user
     const hashedPassword = await bcrypt.hash('admin123', 10)
     
-    await prisma.user.upsert({
+    const user = await prisma.user.upsert({
       where: { username: 'admin' },
       update: {},
       create: {
@@ -20,10 +20,10 @@ export async function POST() {
       },
     })
 
-    // Create sample invoices
-    const existingInvoices = await prisma.invoice.count()
+    // Check if invoices exist
+    const count = await prisma.invoice.count()
     
-    if (existingInvoices === 0) {
+    if (count === 0) {
       const sampleInvoices = [
         {
           invoiceNumber: 'R-0001246',
@@ -65,9 +65,12 @@ export async function POST() {
       }
     }
 
-    return NextResponse.json({ message: 'Database seeded successfully' })
-  } catch (error) {
-    console.error('Error seeding:', error)
-    return NextResponse.json({ error: 'Error seeding database' }, { status: 500 })
+    return NextResponse.json({ 
+      message: 'Setup complete',
+      user: { id: user.id, username: user.username, name: user.name }
+    })
+  } catch (error: any) {
+    console.error('Setup error:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

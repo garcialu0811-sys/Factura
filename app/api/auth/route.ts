@@ -13,7 +13,6 @@ function getPrisma() {
 const DEFAULT_ADMIN = {
   id: 1,
   username: 'admin',
-  password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: password
   name: 'Luci García',
   role: 'admin',
 }
@@ -37,18 +36,26 @@ export async function POST(request: Request) {
     }
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuario no encontrado' },
-        { status: 401 }
-      )
+      // Fallback to default admin when user not in DB
+      if (username === 'admin') {
+        user = DEFAULT_ADMIN
+      } else {
+        return NextResponse.json(
+          { error: 'Usuario no encontrado' },
+          { status: 401 }
+        )
+      }
     }
 
     let validPassword = false
-    try {
-      validPassword = await bcrypt.compare(password, user.password)
-    } catch {
-      // If bcrypt fails, check direct match for default user
+    if (user === DEFAULT_ADMIN) {
       validPassword = password === 'admin123'
+    } else {
+      try {
+        validPassword = await bcrypt.compare(password, user.password)
+      } catch {
+        validPassword = password === 'admin123'
+      }
     }
 
     if (!validPassword) {

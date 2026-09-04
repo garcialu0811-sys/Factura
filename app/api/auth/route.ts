@@ -48,11 +48,11 @@ export async function POST(request: Request) {
     }
 
     let validPassword = false
-    if (user === DEFAULT_ADMIN) {
+    if (username === 'admin' && !user.password) {
       validPassword = password === 'admin123'
     } else {
       try {
-        validPassword = await bcrypt.compare(password, user.password)
+        validPassword = await bcrypt.compare(password, (user as any).password)
       } catch {
         validPassword = password === 'admin123'
       }
